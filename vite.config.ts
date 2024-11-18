@@ -16,7 +16,7 @@ export default defineConfig(({ command }) => {
   return {
     resolve: {
       alias: {
-        '@': path.join(__dirname, 'src')
+        '@': path.join(__dirname, 'src'),
       },
     },
     plugins: [
@@ -27,7 +27,9 @@ export default defineConfig(({ command }) => {
           entry: 'electron/main/index.ts',
           onstart(args) {
             if (process.env.VSCODE_DEBUG) {
-              console.log(/* For `.vscode/.debug.script.mjs` */'[startup] Electron App')
+              console.log(
+                /* For `.vscode/.debug.script.mjs` */ '[startup] Electron App',
+              )
             } else {
               args.startup()
             }
@@ -38,7 +40,9 @@ export default defineConfig(({ command }) => {
               minify: isBuild,
               outDir: 'dist-electron/main',
               rollupOptions: {
-                external: Object.keys('dependencies' in pkg ? pkg.dependencies : {}),
+                external: Object.keys(
+                  'dependencies' in pkg ? pkg.dependencies : {},
+                ),
               },
             },
           },
@@ -53,7 +57,9 @@ export default defineConfig(({ command }) => {
               minify: isBuild,
               outDir: 'dist-electron/preload',
               rollupOptions: {
-                external: Object.keys('dependencies' in pkg ? pkg.dependencies : {}),
+                external: Object.keys(
+                  'dependencies' in pkg ? pkg.dependencies : {},
+                ),
               },
             },
           },
@@ -64,13 +70,15 @@ export default defineConfig(({ command }) => {
         renderer: {},
       }),
     ],
-    server: process.env.VSCODE_DEBUG && (() => {
-      const url = new URL(pkg.debug.env.VITE_DEV_SERVER_URL)
-      return {
-        host: url.hostname,
-        port: +url.port,
-      }
-    })(),
+    server:
+      process.env.VSCODE_DEBUG &&
+      (() => {
+        const url = new URL(pkg.debug.env.VITE_DEV_SERVER_URL)
+        return {
+          host: url.hostname,
+          port: +url.port,
+        }
+      })(),
     clearScreen: false,
   }
 })
