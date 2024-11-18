@@ -1,0 +1,96 @@
+import { app, BrowserWindow, ipcMain } from "electron";
+import Store from "electron-store";
+import { createRequire } from "node:module";
+import os from "node:os";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
+import { TrayManager } from "./tray";
+import { StoreType, WindowManager } from "./window";
+
+const require = createRequire(import.meta.url);
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+
+process.env.APP_ROOT = path.join(__dirname, "../..");
+
+export const MAIN_DIST = path.join(process.env.APP_ROOT, "dist-electron");
+export const RENDERER_DIST = path.join(process.env.APP_ROOT, "dist");
+export const VITE_DEV_SERVER_URL = process.env.VITE_DEV_SERVER_URL;
+
+process.env.VITE_PUBLIC = VITE_DEV_SERVER_URL
+  ? path.join(process.env.APP_ROOT, "public")
+  : RENDERER_DIST;
+
+if (os.release().startsWith("6.1")) app.disableHardwareAcceleration();
+if (process.platform === "win32") app.setAppUserModelId(app.getName());
+
+if (!app.requestSingleInstanceLock()) {
+  app.quit();
+  process.exit(0);
+}
+
+const store = new Store<StoreType>({
+  defaults: {
+    skipCloseConfirmation: false,
+  },
+});
+const preload = path.join(__dirname, "../preload/index.mjs");
+const indexHtml = path.join(RENDERER_DIST, "index.html");
+
+let windowManager: WindowManager;
+let trayManager: TrayManager;
+
+async function init() {
+  windowManager = new WindowManager(
+    store,
+    preload,
+    indexHtml,
+    VITE_DEV_SERVER_URL,
+    process.env.VITE_PUBLIC
+  );
+  const win = await windowManager.createWindow();
+
+  trayManager = new TrayManager(store, windowManager, process.env.VITE_PUBLIC);
+  trayManager.createTray();
+}
+
+app.whenReady().then(init);
+
+app.on("window-all-closed", () => {
+  if (process.platform !== "darwin") {
+    app.quit();
+  }
+});
+
+app.on("second-instance", () => {
+  const win = windowManager.getWindow();
+  if (win) {
+    if (win.isMinimized()) win.restore();
+    win.focus();
+  }
+});
+
+app.on("activate", () => {
+  const allWindows = BrowserWindow.getAllWindows();
+  if (allWindows.length) {
+    allWindows[0].focus();
+  } else {
+    windowManager.createWindow();
+  }
+});
+
+// New window example arg: new windows url
+ipcMain.handle("open-win", (_, arg) => {
+  const childWindow = new BrowserWindow({
+    webPreferences: {
+      preload,
+      nodeIntegration: true,
+      contextIsolation: false,
+    },
+  });
+
+  if (VITE_DEV_SERVER_URL) {
+    childWindow.loadURL(`${VITE_DEV_SERVER_URL}#${arg}`);
+  } else {
+    childWindow.loadFile(indexHtml, { hash: arg });
+  }
+});
