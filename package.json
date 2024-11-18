@@ -20,7 +20,7 @@
     "test": "vitest run"
   },
   "dependencies": {
-    "electron-store": "8.2.0",
+    "electron-store": "10.0.0",
     "electron-updater": "^6.3.9",
     "electron-vite-react": "file:"
   },
