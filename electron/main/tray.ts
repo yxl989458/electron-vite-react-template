@@ -1,4 +1,4 @@
-import { app, dialog, Menu, Tray } from 'electron'
+import { app, dialog, Menu, nativeImage, Tray } from 'electron'
 import type Store from 'electron-store'
 import path from 'node:path'
 import type { StoreType, WindowManager } from './window'
@@ -9,11 +9,12 @@ export class TrayManager {
   constructor(
     private store: Store<StoreType>,
     private windowManager: WindowManager,
-    private VITE_PUBLIC: string,
+    private VITE_PUBLIC: string
   ) {}
 
   createTray() {
-    this.tray = new Tray(path.join(this.VITE_PUBLIC, 'favicon.ico'))
+    const icon = nativeImage.createFromPath(path.join(this.VITE_PUBLIC, 'favicon.ico'))
+    this.tray = new Tray(icon)
     this.setupTrayMenu()
     this.setupTrayEvents()
     return this.tray

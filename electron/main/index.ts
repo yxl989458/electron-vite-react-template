@@ -45,11 +45,16 @@ async function init() {
     preload,
     indexHtml,
     VITE_DEV_SERVER_URL,
-    process.env.VITE_PUBLIC,
+    process.env.VITE_PUBLIC
   )
-  const win = await windowManager.createWindow()
-  trayManager = new TrayManager(store, windowManager, process.env.VITE_PUBLIC)
-  trayManager.createTray()
+
+  try {
+    const win = await windowManager.createWindow()
+    trayManager = new TrayManager(store, windowManager, process.env.VITE_PUBLIC)
+    await trayManager.createTray() // 添加 await 以确保错误被捕获
+  } catch (error) {
+    console.error('Failed to initialize:', error) // 捕获并打印初始化错误
+  }
 }
 
 app.whenReady().then(init)

@@ -16,7 +16,7 @@ export class WindowManager {
     private preload: string,
     private indexHtml: string,
     private VITE_DEV_SERVER_URL: string | undefined,
-    private VITE_PUBLIC: string,
+    private VITE_PUBLIC: string
   ) {}
 
   async createWindow() {
@@ -57,10 +57,7 @@ export class WindowManager {
     })
 
     this.win.webContents.on('did-finish-load', () => {
-      this.win?.webContents.send(
-        'main-process-message',
-        new Date().toLocaleString(),
-      )
+      this.win?.webContents.send('main-process-message', new Date().toLocaleString())
     })
 
     this.win.webContents.setWindowOpenHandler(({ url }) => {
