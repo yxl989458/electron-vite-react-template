@@ -35,7 +35,7 @@ const store = new Store<StoreType>({
   },
 })
 const preload = path.join(__dirname, '../preload/index.mjs')
-const indexHtml = path.join(RENDERER_DIST, 'index.html')
+export const indexHtml = path.join(RENDERER_DIST, 'index.html')
 
 let windowManager: WindowManager
 let trayManager: TrayManager
