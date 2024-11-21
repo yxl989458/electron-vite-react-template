@@ -4,6 +4,7 @@ import { createRequire } from 'node:module'
 import os from 'node:os'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
+import CaptureScreen from './ipc/captrue-screen'
 import { TrayManager } from './tray'
 import { StoreType, WindowManager } from './window'
 
@@ -40,6 +41,7 @@ let windowManager: WindowManager
 let trayManager: TrayManager
 
 async function init() {
+  console.log('init', VITE_DEV_SERVER_URL)
   windowManager = new WindowManager(
     store,
     preload,
@@ -52,6 +54,7 @@ async function init() {
     const win = await windowManager.createWindow()
     trayManager = new TrayManager(store, windowManager, process.env.VITE_PUBLIC)
     await trayManager.createTray() // 添加 await 以确保错误被捕获
+    new CaptureScreen()
   } catch (error) {
     console.error('Failed to initialize:', error) // 捕获并打印初始化错误
   }
@@ -84,6 +87,8 @@ app.on('activate', () => {
 
 // New window example arg: new windows url
 ipcMain.handle('open-win', (_, arg) => {
+  console.log('open-win', arg)
+
   const childWindow = new BrowserWindow({
     webPreferences: {
       preload,
