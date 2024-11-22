@@ -2,9 +2,10 @@ import { app, BrowserWindow, ipcMain } from 'electron'
 import Store from 'electron-store'
 import { createRequire } from 'node:module'
 import os from 'node:os'
+
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
-import CaptureScreen from './ipc/captrue-screen'
+import CaptureScreen from './ipc/capture-screen-ipc'
 import { TrayManager } from './tray'
 import { StoreType, WindowManager } from './window'
 
@@ -34,12 +35,12 @@ const store = new Store<StoreType>({
     skipCloseConfirmation: false,
   },
 })
-const preload = path.join(__dirname, '../preload/index.mjs')
+export const preload = path.join(__dirname, '../preload/index.mjs')
 export const indexHtml = path.join(RENDERER_DIST, 'index.html')
 
 let windowManager: WindowManager
 let trayManager: TrayManager
-
+let captureScreen: CaptureScreen
 async function init() {
   console.log('init', VITE_DEV_SERVER_URL)
   windowManager = new WindowManager(
@@ -54,7 +55,7 @@ async function init() {
     const win = await windowManager.createWindow()
     trayManager = new TrayManager(store, windowManager, process.env.VITE_PUBLIC)
     await trayManager.createTray() // 添加 await 以确保错误被捕获
-    new CaptureScreen()
+    captureScreen = new CaptureScreen()
   } catch (error) {
     console.error('Failed to initialize:', error) // 捕获并打印初始化错误
   }
@@ -102,4 +103,17 @@ ipcMain.handle('open-win', (_, arg) => {
   } else {
     childWindow.loadFile(indexHtml, { hash: arg })
   }
+})
+
+process.on('uncaughtException', (error) => {
+  console.error('Uncaught Exception:', error)
+})
+
+process.on('unhandledRejection', (error) => {
+  console.error('Unhandled Rejection:', error)
+})
+
+// 在应用退出时清理资源
+app.on('will-quit', () => {
+  captureScreen.dispose()
 })
