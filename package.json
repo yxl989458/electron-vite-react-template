@@ -22,7 +22,8 @@
   "dependencies": {
     "electron-store": "8.2.0",
     "electron-updater": "^6.3.9",
-    "electron-vite-react": "file:"
+    "electron-vite-react": "file:",
+    "react-router-dom": "^6.28.0"
   },
   "devDependencies": {
     "@playwright/test": "^1.48.2",
