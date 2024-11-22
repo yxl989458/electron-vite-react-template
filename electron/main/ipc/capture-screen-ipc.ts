@@ -42,7 +42,7 @@ class CaptureScreenIpc {
     ipcMain.on('capture-screen-result', async (event, selection: SelectionArea) => {
       try {
         await this.screenCaptureService.captureScreen(event, selection)
-        // this.windowService.closeAllWindows()
+        this.windowService.closeAllWindows()
       } catch (error) {
         console.error('Failed to capture screen:', error)
         event.reply('capture-screen-error', error)

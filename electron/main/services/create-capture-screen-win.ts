@@ -48,7 +48,7 @@ export class CreateCaptureScreenWindow {
         })
       }
       if (VITE_DEV_SERVER_URL) {
-        captureWin.webContents.openDevTools({ mode: 'bottom' })
+        // captureWin.webContents.openDevTools({ mode: 'bottom' })
       }
       event.reply('capture-screen-id', captureWin.id.toString())
       return captureWin
