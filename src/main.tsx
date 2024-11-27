@@ -1,8 +1,9 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import App from './App'
-
+import { Provider } from 'react-redux'
 import './index.css'
+import { store } from '@/drawingBoard/app/store'
 
 import './demos/ipc'
 // If you want use Node.js, the`nodeIntegration` needs to be enabled in the Main process.
@@ -10,8 +11,10 @@ import './demos/ipc'
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
-    <App />
-  </React.StrictMode>,
+    <Provider store={store}>
+      <App />
+    </Provider>
+  </React.StrictMode>
 )
 
 postMessage({ payload: 'removeLoading' }, '*')

@@ -20,12 +20,33 @@
     "test": "vitest run"
   },
   "dependencies": {
+    "@emotion/react": "^11.10.0",
+    "@emotion/styled": "^11.10.0",
+    "@mui/icons-material": "^5.8.4",
+    "@mui/material": "^5.9.2",
+    "@reduxjs/toolkit": "^1.8.3",
+    "@testing-library/jest-dom": "^5.16.4",
+    "@testing-library/react": "^13.3.0",
+    "@testing-library/user-event": "^14.3.0",
+    "@types/jest": "^27.5.2",
+    "@types/node": "^17.0.45",
+    "@types/react": "^18.0.15",
+    "@types/react-dom": "^18.0.6",
+    "fabric": "^5.2.1",
+    "react": "^18.2.0",
+    "react-color": "^2.19.3",
+    "react-inlinesvg": "^3.0.0",
+    "react-redux": "^8.0.2",
     "electron-store": "8.2.0",
     "electron-updater": "^6.3.9",
     "electron-vite-react": "file:",
     "react-router-dom": "^6.28.0"
+    
   },
   "devDependencies": {
+    "@types/fabric": "^4.5.11",
+    "@types/react-color": "^3.0.6",
+    "@types/react-inlinesvg": "^1.0.0",
     "@playwright/test": "^1.48.2",
     "@types/react": "^18.3.12",
     "@types/react-dom": "^18.3.1",
