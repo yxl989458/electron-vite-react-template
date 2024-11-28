@@ -43,7 +43,7 @@
     "react-router-dom": "^6.28.0"
   },
   "devDependencies": {
-    "@types/fabric": "^4.5.11",
+    "@types/fabric": "^5.3.9",
     "@types/react-color": "^3.0.6",
     "@types/react-inlinesvg": "^1.0.0",
     "@playwright/test": "^1.48.2",
