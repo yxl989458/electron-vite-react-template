@@ -37,7 +37,7 @@
     "react-color": "^2.19.3",
     "react-inlinesvg": "^3.0.0",
     "react-redux": "^8.0.2",
-    "electron-store": "8.2.0",
+    "electron-store": "10.0.0",
     "electron-updater": "^6.3.9",
     "electron-vite-react": "file:",
     "react-router-dom": "^6.28.0"
