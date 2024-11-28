@@ -52,7 +52,7 @@ export default function Capture() {
         height: Math.abs(height),
       })
     },
-    [isSelecting, startPos]
+    [isSelecting, startPos],
   )
 
   const handleMouseUp = useCallback(() => {

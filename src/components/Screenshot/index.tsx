@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom"
+import { Link } from 'react-router-dom'
 
 export default function Screenshot() {
   function clickCaptrueScreen() {
@@ -11,7 +11,10 @@ export default function Screenshot() {
     <div className="flex gap-2">
       <button onClick={clickCaptrueScreen}>captrue Screen</button>
       <button onClick={clickOpenWin}>open win</button>
-      <button> <Link to="/CanvasWrapperPlan">open CanvasWrapperPlan</Link></button>
+      <button>
+        {' '}
+        <Link to="/CanvasWrapperPlan">open CanvasWrapperPlan</Link>
+      </button>
     </div>
   )
 }

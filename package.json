@@ -41,7 +41,6 @@
     "electron-updater": "^6.3.9",
     "electron-vite-react": "file:",
     "react-router-dom": "^6.28.0"
-    
   },
   "devDependencies": {
     "@types/fabric": "^4.5.11",

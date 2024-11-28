@@ -9,7 +9,7 @@ export class TrayManager {
   constructor(
     private store: Store<StoreType>,
     private windowManager: WindowManager,
-    private VITE_PUBLIC: string
+    private VITE_PUBLIC: string,
   ) {}
 
   createTray() {

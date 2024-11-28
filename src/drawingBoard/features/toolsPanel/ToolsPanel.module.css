@@ -1,9 +1,8 @@
 .toggleButtonContent {
-    display: flex;
-    width: 96%;
-
+  display: flex;
+  width: 96%;
 }
 
-.toggleButtonContent>svg {
-    margin-left: auto;
+.toggleButtonContent > svg {
+  margin-left: auto;
 }

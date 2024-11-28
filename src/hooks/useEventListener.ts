@@ -3,7 +3,7 @@ import { useEffect, useRef } from 'react'
 export function useEventListener<K extends keyof WindowEventMap>(
   eventName: K,
   handler: (event: WindowEventMap[K]) => void,
-  element: HTMLElement | Window = window
+  element: HTMLElement | Window = window,
 ) {
   const savedHandler = useRef(handler)
 

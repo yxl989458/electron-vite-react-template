@@ -20,7 +20,7 @@ export class ScreenCaptureService {
 
     // 获取当前屏幕的截图的源
     const currentSource = sources.find(
-      (source) => source.display_id === currentDisplay.id.toString()
+      (source) => source.display_id === currentDisplay.id.toString(),
     )
 
     if (!currentSource?.thumbnail) throw new Error('Failed to capture screen')

@@ -56,13 +56,10 @@ const Update = () => {
     [],
   )
 
-  const onUpdateError = useCallback(
-    (_event: Electron.IpcRendererEvent, arg1: ErrorType) => {
-      setUpdateAvailable(false)
-      setUpdateError(arg1)
-    },
-    [],
-  )
+  const onUpdateError = useCallback((_event: Electron.IpcRendererEvent, arg1: ErrorType) => {
+    setUpdateAvailable(false)
+    setUpdateError(arg1)
+  }, [])
 
   const onDownloadProgress = useCallback(
     (_event: Electron.IpcRendererEvent, arg1: ProgressInfo) => {
@@ -71,18 +68,15 @@ const Update = () => {
     [],
   )
 
-  const onUpdateDownloaded = useCallback(
-    (_event: Electron.IpcRendererEvent, ...args: any[]) => {
-      setProgressInfo({ percent: 100 })
-      setModalBtn((state) => ({
-        ...state,
-        cancelText: 'Later',
-        okText: 'Install now',
-        onOk: () => window.ipcRenderer.invoke('quit-and-install'),
-      }))
-    },
-    [],
-  )
+  const onUpdateDownloaded = useCallback((_event: Electron.IpcRendererEvent, ...args: any[]) => {
+    setProgressInfo({ percent: 100 })
+    setModalBtn((state) => ({
+      ...state,
+      cancelText: 'Later',
+      okText: 'Install now',
+      onOk: () => window.ipcRenderer.invoke('quit-and-install'),
+    }))
+  }, [])
 
   useEffect(() => {
     // Get version information and whether to update
@@ -128,9 +122,7 @@ const Update = () => {
               </div>
             </div>
           ) : (
-            <div className="can-not-available">
-              {JSON.stringify(versionInfo ?? {}, null, 2)}
-            </div>
+            <div className="can-not-available">{JSON.stringify(versionInfo ?? {}, null, 2)}</div>
           )}
         </div>
       </Modal>

@@ -48,7 +48,7 @@ async function init() {
     preload,
     indexHtml,
     VITE_DEV_SERVER_URL,
-    process.env.VITE_PUBLIC
+    process.env.VITE_PUBLIC,
   )
 
   try {

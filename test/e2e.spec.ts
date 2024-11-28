@@ -24,12 +24,9 @@ if (process.platform === 'linux') {
     })
     page = await electronApp.firstWindow()
 
-    const mainWin: JSHandle<BrowserWindow> =
-      await electronApp.browserWindow(page)
+    const mainWin: JSHandle<BrowserWindow> = await electronApp.browserWindow(page)
     await mainWin.evaluate(async (win) => {
-      win.webContents.executeJavaScript(
-        'console.log("Execute JavaScript with e2e testing.")',
-      )
+      win.webContents.executeJavaScript('console.log("Execute JavaScript with e2e testing.")')
     })
   })
 
