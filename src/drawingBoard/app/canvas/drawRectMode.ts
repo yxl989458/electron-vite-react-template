@@ -7,66 +7,83 @@ type RectOptions = {
   fillColor: string
 }
 
-//Look into drawLineMode for comments
 export const drawRectMode: ApplyCanvasModeFunc<RectOptions> = (canvas, getState) => {
-  let _origX = 0
-  let _origY = 0
-  let _rect: fabric.Rect
-  let _mouseDown = false
+  let isDrawing = false
+  let startPoint = { x: 0, y: 0 }
+  let currentRect: fabric.Rect | null = null
 
-  canvas.on('mouse:down', function onMouseDown(event) {
-    if (canvas._activeObject) return
+  const createRect = (pointer: { x: number; y: number }) => {
     const { fillColor, strokeColor, strokeSize } = getState().optionsPanel
-
     const objects = canvas.getObjects()
     const rectCount = objects.filter((o) => o.type === 'rect').length
 
-    _mouseDown = true
-
-    let pointer = canvas.getPointer(event.e)
-    _origX = pointer.x
-    _origY = pointer.y
-    _rect = new fabric.Rect({
+    return new fabric.Rect({
       name: `Rect ${rectCount + 1}`,
-      left: _origX,
-      top: _origY,
+      left: pointer.x,
+      top: pointer.y,
       originX: 'left',
       originY: 'top',
-      width: pointer.x - _origX,
-      height: pointer.y - _origY,
+      width: 0,
+      height: 0,
       angle: 0,
       fill: fillColor,
       stroke: strokeColor,
       strokeWidth: strokeSize,
       transparentCorners: false,
       selectable: true,
+      hasControls: false,
+      hasBorders: false
     })
-    canvas.add(_rect)
+  }
+
+  const updateRectSize = (rect: fabric.Rect, pointer: { x: number; y: number }) => {
+    const width = Math.abs(pointer.x - startPoint.x)
+    const height = Math.abs(pointer.y - startPoint.y)
+    const left = pointer.x < startPoint.x ? pointer.x : startPoint.x
+    const top = pointer.y < startPoint.y ? pointer.y : startPoint.y
+
+    rect.set({
+      left,
+      top,
+      width,
+      height
+    })
+  }
+
+  canvas.on('mouse:down', function onMouseDown(event) {
+    if (event.target) {
+      isDrawing = false
+      return
+    }
+
+    isDrawing = true
+    const pointer = canvas.getPointer(event.e)
+    startPoint = { x: pointer.x, y: pointer.y }
+    currentRect = createRect(startPoint)
+    canvas.add(currentRect)
+    canvas.setActiveObject(currentRect)
   })
+
   canvas.on('mouse:move', function onMouseMove(event) {
-    if (canvas._activeObject) return
-    if (!_mouseDown) return
-    let pointer = canvas.getPointer(event.e)
+    if (!isDrawing || !currentRect) return
 
-    if (_origX > pointer.x) {
-      _rect.set({ left: Math.abs(pointer.x) })
-    }
-    if (_origY > pointer.y) {
-      _rect.set({ top: Math.abs(pointer.y) })
-    }
-
-    _rect.set({ width: Math.abs(_origX - pointer.x) })
-    _rect.set({ height: Math.abs(_origY - pointer.y) })
-
+    const pointer = canvas.getPointer(event.e)
+    updateRectSize(currentRect, pointer)
     canvas.renderAll()
   })
-  canvas.on('mouse:up', function onMouseUp() {
-    _mouseDown = false
 
-    if ((_rect && _rect.width === 0) || _rect.height === 0) {
-      canvas.remove(_rect)
+  canvas.on('mouse:up', function onMouseUp() {
+    if (!isDrawing || !currentRect) return
+
+    isDrawing = false
+    
+    if (currentRect.width === 0 || currentRect.height === 0) {
+      canvas.remove(currentRect)
     }
+    
+    currentRect = null
   })
+
 
   return () => {
     canvas.off('mouse:down')

@@ -29,7 +29,9 @@ export const initializeCanvasEffect = (canvas: fabric.Canvas, dispatch: AppDispa
   // _canvas.selection = false
   canvas.on('object:selected', (event) => {
     console.log('object:selected', event.absolutePointer)
-    dispatch(setControllerPanelPosition([event.absolutePointer?.x ?? 0, event.absolutePointer?.y ?? 0]))
+    dispatch(
+      setControllerPanelPosition([event.absolutePointer?.x ?? 0, event.absolutePointer?.y ?? 0])
+    )
   })
 
   canvas.freeDrawingBrush.width = 1
@@ -42,7 +44,6 @@ export const initializeCanvasEffect = (canvas: fabric.Canvas, dispatch: AppDispa
     canvas.renderAll()
   }
 }
-
 
 // 每当 strokeSizeSelected action 被触发时
 // 我们会在 _canvas 对象中更新该设置
@@ -79,6 +80,7 @@ _listenerMiddleware.startListening({
   actionCreator: toolSelected,
   effect: (action, listenerApi) => {
     if (!_canvas) return
+    if (!action.payload) return
 
     // 在工具变化时取消订阅特定工具添加的画布事件
     if (_cleanupMode) _cleanupMode()
@@ -103,7 +105,7 @@ _listenerMiddleware.startListening({
     _cleanupMode = applyMode(
       _canvas,
       () => listenerApi.getState() as RootState,
-      listenerApi.dispatch as AppDispatch,
+      listenerApi.dispatch as AppDispatch
     )
   },
 })
