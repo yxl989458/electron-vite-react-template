@@ -1,43 +1,56 @@
 import { fabric } from 'fabric'
 import { _canvas } from '../canvasMiddleware'
 
-export const addImageToCanvas = (file: File) => {
-  if (!_canvas) return
-  const canvas = _canvas
-  const reader = new FileReader()
+const readFileAsDataURL = (file: File): Promise<string> => {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader()
+    reader.onload = () => resolve(reader.result as string)
+    reader.onerror = reject
+    reader.readAsDataURL(file)
+  })
+}
 
-  reader.onload = function (event) {
-    const imgObj = new Image()
-    imgObj.src = event.target?.result as string
+export const addImageToCanvas = async (file: File) => {
+  // 获取视口信息
+  const vpt = _canvas.viewportTransform || [1, 0, 0, 1, 0, 0]
+  const zoom = _canvas.getZoom()
 
-    imgObj.onload = function () {
-      new fabric.WebglFilterBackend
-      const image = new fabric.Image(imgObj, {
-        borderColor: 'green',
-        cornerColor: 'green',
-        name: `Image ${canvas.getObjects().filter((o) => o.type === 'image').length + 1}`,
-        hasRotatingPoint: false, //是否显示旋转按钮
-      })
-      console.log(fabric.Image.prototype.controls)
+  const viewportCenterX = (-vpt[4] + _canvas.getWidth() / 2) / zoom
+  const viewportCenterY = (-vpt[5] + _canvas.getHeight() / 2) / zoom
 
-      // 调整图片大小以适应画布
-      const canvasWidth = canvas.width || 800
-      const canvasHeight = canvas.height || 600
-      const maxWidth = canvasWidth * 0.8; // 最大宽度为画布宽度的80%
-      const maxHeight = canvasHeight * 0.8; // 最大高度为画布高度的80%
+  try {
+    const url = await readFileAsDataURL(file)
+    fabric.Image.fromURL(url, (img) => {
+      // 设置目标最大尺寸（以像素为单位）
+      const TARGET_MAX_SIZE = 400
+      const TARGET_MIN_SIZE = 100
 
-      if (image.width && image.height) {
-        if (image.width > maxWidth || image.height > maxHeight) {
-          const scale = Math.min(maxWidth / image.width, maxHeight / image.height)
-          image.scale(scale)
-        }
+      // 计算缩放比例
+      let scale
+      if (img.width! >= img.height!) {
+        // 如果图片是横向的或方形的
+        scale = Math.min(
+          Math.max(TARGET_MIN_SIZE / img.width!, TARGET_MAX_SIZE / img.width!),
+          1 // 不要放大图片
+        )
+      } else {
+        // 如果图片是纵向的
+        scale = Math.min(
+          Math.max(TARGET_MIN_SIZE / img.height!, TARGET_MAX_SIZE / img.height!),
+          1 // 不要放大图片
+        )
       }
 
-      canvas.add(image)
-      canvas.centerObject(image)
-      canvas.renderAll()
-    }
+      img.scale(scale)
+      img.set({
+        left: viewportCenterX - (img.width! * scale) / 2,
+        top: viewportCenterY - (img.height! * scale) / 2,
+      })
+      _canvas.add(img)
+      _canvas.setActiveObject(img)
+      _canvas.requestRenderAll()
+    })
+  } catch (error) {
+    console.error('Error adding image:', error)
   }
-
-  reader.readAsDataURL(file)
 }

@@ -18,6 +18,7 @@ import OpenWithIcon from '@mui/icons-material/OpenWith'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import MoveToInboxIcon from '@mui/icons-material/MoveDownSharp'
 import ImageIcon from '@mui/icons-material/Image'
+import TextFieldsIcon from '@mui/icons-material/TextFields'
 import { useRef } from 'react'
 import { addImageToCanvas } from '@/drawingBoard/app/canvas/addImage'
 
@@ -91,6 +92,12 @@ export const ToolsPanel = () => {
               <div className={styles.toggleButtonContent}>
                 Upload Image
                 <ImageIcon />
+              </div>
+            </ToggleButton>
+            <ToggleButton value="text">
+              <div className={styles.toggleButtonContent}>
+                Text
+                <TextFieldsIcon />
               </div>
             </ToggleButton>
           </ToggleButtonGroup>

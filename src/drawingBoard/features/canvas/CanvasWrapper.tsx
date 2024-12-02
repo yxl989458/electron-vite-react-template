@@ -9,7 +9,7 @@ export const CanvasWrapper = () => {
   const dispatch = useAppDispatch()
 
   useEffect(() => {
-    const canvas = new fabric.Canvas(canvasEl.current ,{selection:false})
+    const canvas = new fabric.Canvas(canvasEl.current, { selection: false })
 
     //The only direct interaction. Required to pass canvas object to the middleware
     initializeCanvasEffect(canvas, dispatch)
@@ -27,7 +27,7 @@ export const CanvasWrapper = () => {
         ref={canvasEl}
         className="bg-gray-400/20 border absolute inset-0 border-blue-500"
       />
-      <ControllerPanel/>
+      <ControllerPanel />
     </div>
   )
 }

@@ -8,6 +8,8 @@ interface MoveCanvasMode extends fabric.Canvas {
 
 export const moveCanvasMode: ApplyCanvasModeFunc<undefined> = (canvas, _, dispatch) => {
   canvas.on('mouse:down', function (this: MoveCanvasMode, opt) {
+    // 不激活对象
+    canvas.discardActiveObject()
     var evt = opt.e
     this.isDragging = true
     this.lastPosX = evt.clientX

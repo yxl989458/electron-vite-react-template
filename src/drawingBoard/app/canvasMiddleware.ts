@@ -7,8 +7,7 @@ import { drawLineMode as applyDrawLineMode } from './canvas/drawLineMode'
 import { handMode as applyHandMode } from './canvas/handMode'
 import { moveCanvasMode as applyMoveCanvasMode } from './canvas/moveCanvasMode'
 import generateSvgForShape from './canvas/generateSvgForShape'
-import { addImageToCanvas } from './canvas/addImage'
-
+import { textMode as applyTextMode } from './canvas/TextMode'
 import { AppDispatch, RootState } from './store'
 
 import { Tool, toolSelected } from '../features/toolsPanel/toolsPanelSlice'
@@ -26,15 +25,7 @@ export let _canvas: fabric.Canvas
 
 export const initializeCanvasEffect = (canvas: fabric.Canvas, dispatch: AppDispatch) => {
   _canvas = canvas
-  // _canvas.selection = false
-  canvas.on('object:selected', (event) => {
-    console.log('object:selected', event.absolutePointer)
-    dispatch(
-      setControllerPanelPosition([event.absolutePointer?.x ?? 0, event.absolutePointer?.y ?? 0])
-    )
-  })
-
-  canvas.freeDrawingBrush.width = 1
+  _canvas.freeDrawingBrush.width = 1
   document.onkeydown = function (e) {
     switch (e.key) {
       case 'Delete':
@@ -117,6 +108,7 @@ const canvasMode: Record<Tool, ApplyCanvasModeFunc<unknown>> = {
   rectangle: applyDrawRectMode,
   pencil: applyFreeDrawMode,
   'move canvas': applyMoveCanvasMode,
+  text: applyTextMode,
 }
 
 export default _listenerMiddleware.middleware
