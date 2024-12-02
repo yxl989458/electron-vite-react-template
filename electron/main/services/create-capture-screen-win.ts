@@ -37,7 +37,9 @@ export class CreateCaptureScreenWindow {
       captureWin.setAlwaysOnTop(true, 'screen-saver')
       captureWin.setVisibleOnAllWorkspaces(true)
       captureWin.setFullScreenable(false)
-      captureWin.setWindowButtonVisibility(false)
+      if (os.platform() === 'darwin') {
+        captureWin.setWindowButtonVisibility(false)
+      }
 
       //向渲染进程发消息
       if (VITE_DEV_SERVER_URL) {
