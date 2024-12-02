@@ -3,8 +3,12 @@ import { ApplyCanvasModeFunc } from './canvasMode'
 import { fabric } from 'fabric'
 
 export const textMode: ApplyCanvasModeFunc<undefined> = (canvas, _, dispatch) => {
+  const objects = canvas.getObjects()
+  const TextCount = objects.filter((o) => o.type === 'textbox').length
+
   function createText(pointer: { x: number; y: number }) {
     return new fabric.Textbox('', {
+      name: `Textbox ${TextCount + 1}`,
       left: pointer.x,
       top: pointer.y,
       fontSize: 32,

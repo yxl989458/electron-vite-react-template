@@ -6,7 +6,7 @@ import { ToolsPanel } from './drawingBoard/features/toolsPanel/ToolsPanel'
 function CanvasWrapperPlan() {
   return (
     <div className="flex  overflow-auto ">
-      <div className="Sidebar w-[244px] flex-shrink-0 bg-#dcdcdc">
+      <div className="Sidebar w-[280px] flex-shrink-0 bg-#dcdcdc">
         <ToolsPanel />
         <OptionsPanel />
         <ShapesPanel />
