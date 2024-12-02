@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { RootState } from '../../app/store'
 
-export type Tool = 'pencil' | 'rectangle' | 'line' | 'move' | 'move canvas' | 'text'
+export type Tool = 'pencil' | 'rectangle' | 'line' | 'move' | 'move canvas' | 'text' | 'in paint'
 
 export interface ToolsState {
   selectedTool: Tool

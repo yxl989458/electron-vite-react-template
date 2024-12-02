@@ -1,20 +1,20 @@
 import { createListenerMiddleware } from '@reduxjs/toolkit'
 import { fabric } from 'fabric'
 
+import { drawLineMode as applyDrawLineMode } from './canvas/drawLineMode'
 import { drawRectMode as applyDrawRectMode } from './canvas/drawRectMode'
 import { freeDrawMode as applyFreeDrawMode } from './canvas/freeDrawMode'
-import { drawLineMode as applyDrawLineMode } from './canvas/drawLineMode'
-import { handMode as applyHandMode } from './canvas/handMode'
-import { moveCanvasMode as applyMoveCanvasMode } from './canvas/moveCanvasMode'
 import generateSvgForShape from './canvas/generateSvgForShape'
-import { textMode as applyTextMode } from './canvas/TextMode'
+import { handMode as applyHandMode } from './canvas/handMode'
+import { darwinPaint as applyInPaintMode } from './canvas/inPaintMode'
+import { moveCanvasMode as applyMoveCanvasMode } from './canvas/moveCanvasMode'
+import { textMode as applyTextMode } from './canvas/textboxMode'
 import { AppDispatch, RootState } from './store'
 
-import { Tool, toolSelected } from '../features/toolsPanel/toolsPanelSlice'
 import { strokeColorSelected, strokeSizeSelected } from '../features/optionsPanel/optionsPanelSlice'
-import { shapesUpdated, shapeRemoved } from '../features/shapesPanel/shapesPanelSlice'
+import { shapeRemoved, shapesUpdated } from '../features/shapesPanel/shapesPanelSlice'
+import { Tool, toolSelected } from '../features/toolsPanel/toolsPanelSlice'
 import { ApplyCanvasModeFunc } from './canvas/canvasMode'
-import { setControllerPanelPosition } from '../features/controllerPanel/controllerPanelSlice'
 
 // 创建中间件
 const _listenerMiddleware = createListenerMiddleware()
@@ -109,6 +109,7 @@ const canvasMode: Record<Tool, ApplyCanvasModeFunc<unknown>> = {
   pencil: applyFreeDrawMode,
   'move canvas': applyMoveCanvasMode,
   text: applyTextMode,
+  'in paint': applyInPaintMode,
 }
 
 export default _listenerMiddleware.middleware

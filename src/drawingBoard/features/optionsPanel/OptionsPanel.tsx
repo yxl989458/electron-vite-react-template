@@ -1,20 +1,18 @@
-import React from 'react'
-
-import { useAppSelector, useAppDispatch } from '../../app/hooks'
-import styles from './OptionsPanel.module.css'
-import Accordion from '@mui/material/Accordion'
-import AccordionSummary from '@mui/material/AccordionSummary'
-import AccordionDetails from '@mui/material/AccordionDetails'
-import Typography from '@mui/material/Typography'
 import CircleIcon from '@mui/icons-material/Circle'
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
+import Accordion from '@mui/material/Accordion'
+import AccordionDetails from '@mui/material/AccordionDetails'
+import AccordionSummary from '@mui/material/AccordionSummary'
 import ToggleButton from '@mui/material/ToggleButton'
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup'
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
+import Typography from '@mui/material/Typography'
 import { GithubPicker } from 'react-color'
+import { useAppDispatch, useAppSelector } from '../../app/hooks'
+import styles from './OptionsPanel.module.css'
 import {
+  fillColorSelected,
   getOptions,
   strokeColorSelected,
-  fillColorSelected,
   strokeSizeSelected,
 } from './optionsPanelSlice'
 
@@ -36,6 +34,7 @@ export const OptionsPanel = () => {
             <>
               <p>Stroke Size</p>
               <ToggleButtonGroup
+                className="flex flex-wrap"
                 value={String(options.strokeSize)}
                 exclusive
                 onChange={(e, newValue) => dispatch(strokeSizeSelected(Number(newValue)))}>
@@ -57,8 +56,20 @@ export const OptionsPanel = () => {
                 <ToggleButton value="6">
                   <CircleIcon sx={{ fontSize: 6 }} />
                 </ToggleButton>
-                <ToggleButton value="7">
-                  <CircleIcon sx={{ fontSize: 7 }} />
+                <ToggleButton value="10">
+                  <CircleIcon sx={{ fontSize: 10 }} />
+                </ToggleButton>
+                <ToggleButton value="20">
+                  <CircleIcon sx={{ fontSize: 20 }} />
+                </ToggleButton>
+                <ToggleButton value="30">
+                  <CircleIcon sx={{ fontSize: 30 }} />
+                </ToggleButton>
+                <ToggleButton value="40">
+                  <CircleIcon sx={{ fontSize: 40 }} />
+                </ToggleButton>
+                <ToggleButton value="50">
+                  <CircleIcon sx={{ fontSize: 50 }} />
                 </ToggleButton>
               </ToggleButtonGroup>
 

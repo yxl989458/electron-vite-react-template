@@ -1,26 +1,27 @@
-import { useAppSelector, useAppDispatch } from '../../app/hooks'
+import { useAppDispatch, useAppSelector } from '../../app/hooks'
 import { getSelectedTool, toolSelected } from './toolsPanelSlice'
 
 import { showFillOptionsChanged, showStrokeOptionsChanged } from '../optionsPanel/optionsPanelSlice'
 
 import styles from './ToolsPanel.module.css'
 
-import Accordion from '@mui/material/Accordion'
-import AccordionSummary from '@mui/material/AccordionSummary'
-import AccordionDetails from '@mui/material/AccordionDetails'
-import Typography from '@mui/material/Typography'
-import ToggleButton from '@mui/material/ToggleButton'
-import ToggleButtonGroup from '@mui/material/ToggleButtonGroup'
+import { addImageToCanvas } from '@/drawingBoard/app/canvas/addImage'
+import { Pentagon as SendSharpIcon } from '@mui/icons-material'
 import CreateIcon from '@mui/icons-material/Create'
 import Crop169Icon from '@mui/icons-material/Crop169'
-import HorizontalRuleIcon from '@mui/icons-material/HorizontalRule'
-import OpenWithIcon from '@mui/icons-material/OpenWith'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
-import MoveToInboxIcon from '@mui/icons-material/MoveDownSharp'
+import HorizontalRuleIcon from '@mui/icons-material/HorizontalRule'
 import ImageIcon from '@mui/icons-material/Image'
+import MoveToInboxIcon from '@mui/icons-material/MoveDownSharp'
+import OpenWithIcon from '@mui/icons-material/OpenWith'
 import TextFieldsIcon from '@mui/icons-material/TextFields'
+import Accordion from '@mui/material/Accordion'
+import AccordionDetails from '@mui/material/AccordionDetails'
+import AccordionSummary from '@mui/material/AccordionSummary'
+import ToggleButton from '@mui/material/ToggleButton'
+import ToggleButtonGroup from '@mui/material/ToggleButtonGroup'
+import Typography from '@mui/material/Typography'
 import { useRef } from 'react'
-import { addImageToCanvas } from '@/drawingBoard/app/canvas/addImage'
 
 export const ToolsPanel = () => {
   const selectedTool = useAppSelector(getSelectedTool)
@@ -98,6 +99,12 @@ export const ToolsPanel = () => {
               <div className={styles.toggleButtonContent}>
                 Text
                 <TextFieldsIcon />
+              </div>
+            </ToggleButton>
+            <ToggleButton value="in paint">
+              <div className={styles.toggleButtonContent}>
+                in paint
+                <SendSharpIcon />
               </div>
             </ToggleButton>
           </ToggleButtonGroup>
