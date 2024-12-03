@@ -22,8 +22,8 @@ export const CanvasWrapper = () => {
   return (
     <div ref={containerEl} className="border w-full relative">
       <canvas
-        width={1400}
-        height={1000}
+        width={1350}
+        height={900}
         ref={canvasEl}
         className="bg-gray-400/20 border absolute inset-0 border-blue-500"
       />

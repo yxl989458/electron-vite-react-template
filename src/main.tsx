@@ -1,19 +1,25 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import App from './App'
 import { Provider } from 'react-redux'
 import './index.css'
 import { store } from '@/drawingBoard/app/store'
+import { RouterProvider } from 'react-router-dom'
+import { router } from './router'
 
 import './demos/ipc'
-// If you want use Node.js, the`nodeIntegration` needs to be enabled in the Main process.
-// import './demos/node'
+
+import { ThemeProvider } from '@mui/material/styles'
+import CssBaseline from '@mui/material/CssBaseline'
+import { theme } from './theme'
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
-    <Provider store={store}>
-      <App />
-    </Provider>
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      <Provider store={store}>
+        <RouterProvider router={router} />
+      </Provider>
+    </ThemeProvider>
   </React.StrictMode>,
 )
 

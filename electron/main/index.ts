@@ -1,4 +1,4 @@
-import { app, BrowserWindow, ipcMain } from 'electron'
+import { app, BrowserWindow, globalShortcut, ipcMain } from 'electron'
 import Store from 'electron-store'
 import { createRequire } from 'node:module'
 import os from 'node:os'
@@ -50,6 +50,9 @@ async function init() {
     VITE_DEV_SERVER_URL,
     process.env.VITE_PUBLIC,
   )
+  globalShortcut.register('F12', () => {
+    windowManager.getWindow()?.webContents.toggleDevTools()
+  })
 
   try {
     const win = await windowManager.createWindow()
@@ -117,3 +120,5 @@ process.on('unhandledRejection', (error) => {
 app.on('will-quit', () => {
   captureScreen.dispose()
 })
+
+

@@ -1,17 +1,12 @@
-import { HashRouter, Route, Routes } from 'react-router-dom'
-import Capture from './capture'
-import Screenshot from './components/Screenshot'
-import CanvasWrapperPlan from './canvasWrapperPlan'
+import { MainLayout } from './layouts/MainLayout'
+import { Routes, Route, Outlet } from 'react-router-dom'
+import { CanvasWrapper } from './drawingBoard/features/canvas/CanvasWrapper'
 
 function App() {
   return (
-    <HashRouter>
-      <Routes>
-        <Route path="/" element={<Screenshot></Screenshot>} />
-        <Route path="/capture" element={<Capture />} />
-        <Route path="/canvasWrapperPlan" element={<CanvasWrapperPlan />} />
-      </Routes>
-    </HashRouter>
+    <MainLayout>
+      <Outlet />
+    </MainLayout>
   )
 }
 
