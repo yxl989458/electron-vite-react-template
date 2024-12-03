@@ -10,6 +10,7 @@ import { darwinPaint as applyInPaintMode } from './canvas/inPaintMode'
 import { moveCanvasMode as applyMoveCanvasMode } from './canvas/moveCanvasMode'
 import { textMode as applyTextMode } from './canvas/textboxMode'
 import { AppDispatch, RootState } from './store'
+import { expandMode as applyExpandMode } from './canvas/expandMode'
 
 import { strokeColorSelected, strokeSizeSelected } from '../features/optionsPanel/optionsPanelSlice'
 import { shapeRemoved, shapesUpdated } from '../features/shapesPanel/shapesPanelSlice'
@@ -110,6 +111,7 @@ const canvasMode: Record<Tool, ApplyCanvasModeFunc<unknown>> = {
   'move canvas': applyMoveCanvasMode,
   text: applyTextMode,
   'in paint': applyInPaintMode,
+  expand: applyExpandMode,
 }
 
 export default _listenerMiddleware.middleware

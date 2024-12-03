@@ -6,7 +6,7 @@ import { showFillOptionsChanged, showStrokeOptionsChanged } from '../optionsPane
 import styles from './ToolsPanel.module.css'
 
 import { addImageToCanvas } from '@/drawingBoard/app/canvas/addImage'
-import { Pentagon as SendSharpIcon } from '@mui/icons-material'
+import { Pentagon as SendSharpIcon, Expand as ExpandIcon } from '@mui/icons-material'
 import CreateIcon from '@mui/icons-material/Create'
 import Crop169Icon from '@mui/icons-material/Crop169'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
@@ -105,6 +105,12 @@ export const ToolsPanel = () => {
               <div className={styles.toggleButtonContent}>
                 in paint
                 <SendSharpIcon />
+              </div>
+            </ToggleButton>
+            <ToggleButton value="expand">
+              <div className={styles.toggleButtonContent}>
+                expand
+                <ExpandIcon />
               </div>
             </ToggleButton>
           </ToggleButtonGroup>

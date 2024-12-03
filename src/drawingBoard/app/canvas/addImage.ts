@@ -27,6 +27,7 @@ export const addImageToCanvas = async (file: File) => {
 
       // 计算缩放比例
       let scale
+
       if (img.width! >= img.height!) {
         // 如果图片是横向的或方形的
         scale = Math.min(
@@ -40,11 +41,11 @@ export const addImageToCanvas = async (file: File) => {
           1 // 不要放大图片
         )
       }
-
       img.scale(scale)
       img.set({
         left: viewportCenterX - (img.width! * scale) / 2,
         top: viewportCenterY - (img.height! * scale) / 2,
+        lockUniScaling: true,
       })
       _canvas.add(img)
       _canvas.setActiveObject(img)
