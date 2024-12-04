@@ -4,7 +4,7 @@ import path from 'node:path'
 import { defineConfig } from 'vite'
 import electron from 'vite-plugin-electron/simple'
 import pkg from './package.json'
-
+import svgr from 'vite-plugin-svgr'
 // https://vitejs.dev/config/
 export default defineConfig(({ command }) => {
   rmSync('dist-electron', { recursive: true, force: true })
@@ -20,6 +20,7 @@ export default defineConfig(({ command }) => {
       },
     },
     plugins: [
+      svgr(),
       react(),
       electron({
         main: {

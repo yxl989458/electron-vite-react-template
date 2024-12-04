@@ -1,5 +1,6 @@
 import { createBrowserRouter } from 'react-router-dom'
 import App from '../App'
+import HomePage from '../pages/Home'
 import CanvasWrapperPlan from '@/canvasWrapperPlan'
 
 export const router = createBrowserRouter([
@@ -9,7 +10,7 @@ export const router = createBrowserRouter([
     children: [
       {
         path: '/',
-        element: <CanvasWrapperPlan />,
+        element: <HomePage />,
       },
       {
         path: '/ai-apps',

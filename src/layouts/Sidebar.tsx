@@ -1,28 +1,28 @@
 import { useState } from 'react'
-import { 
-  Drawer, 
-  List, 
-  ListItem, 
-  ListItemIcon, 
-  ListItemText, 
-  Toolbar, 
+import {
+  Drawer,
+  List,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+  Toolbar,
   Typography,
   IconButton,
   Box,
-  Divider
+  Divider,
+  SvgIcon,
 } from '@mui/material'
-import HomeIcon from '@mui/icons-material/Home'
-import AppsIcon from '@mui/icons-material/Apps'
-import ExtensionIcon from '@mui/icons-material/Extension'
-import ImageIcon from '@mui/icons-material/Image'
-import CategoryIcon from '@mui/icons-material/Category'
-import DesignServicesIcon from '@mui/icons-material/DesignServices'
-import WorkIcon from '@mui/icons-material/Work'
-import ArticleIcon from '@mui/icons-material/Article'
 import MenuOpenIcon from '@mui/icons-material/MenuOpen'
-import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
 import styled from '@emotion/styled'
 import { NavLink } from 'react-router-dom'
+import HomeIcon from '../assets/icon/home.svg?react'
+import SendIcon from '../assets/icon/send.svg?react'
+import ExtensionIcon from '../assets/icon/extension.svg?react'
+import FreeArtImageIcon from '../assets/icon/freeArtImage.svg?react'
+import ModelsIcon from '../assets/icon/models.svg?react'
+import WorksIcon from '../assets/icon/works.svg?react'
+import ComfyUiIcon from '../assets/icon/comfyUi.svg?react'
+import PostsIcon from '../assets/icon/posts.svg?react'
 
 const Logo = styled('div')({
   display: 'flex',
@@ -35,18 +35,30 @@ const Logo = styled('div')({
   '& .art': {
     color: '#9c27b0',
     fontWeight: 700,
-  }
+  },
 })
 
 const menuItems = [
-  { text: 'Index', icon: <HomeIcon />, path: '/' },
-  { text: 'AI Apps', icon: <AppsIcon />, path: '/ai-apps' },
-  { text: 'AI Plugins', icon: <ExtensionIcon />, path: '/ai-plugins' },
-  { text: 'Create Image', icon: <ImageIcon />, path: '/create-image' },
-  { text: 'Models', icon: <CategoryIcon />, path: '/models' },
-  { text: 'ComfyUI', icon: <DesignServicesIcon />, path: '/comfyui' },
-  { text: 'My Works', icon: <WorkIcon />, path: '/my-works' },
-  { text: 'Posts', icon: <ArticleIcon />, path: '/posts' },
+  {
+    text: 'Index',
+    icon: <HomeIcon width={24} height={24} />,
+    path: '/',
+  },
+  {
+    text: 'AI Apps',
+    icon: <SendIcon width={24} height={24} />,
+    path: '/ai-apps',
+  },
+  { text: 'AI Plugins', icon: <ExtensionIcon width={24} height={24} />, path: '/ai-plugins' },
+  {
+    text: 'Create Image',
+    icon: <FreeArtImageIcon width={24} height={24} />,
+    path: '/create-image',
+  },
+  { text: 'Models', icon: <ModelsIcon width={24} height={24} />, path: '/models' },
+  { text: 'ComfyUI', icon: <ComfyUiIcon width={24} height={24} />, path: '/comfyui' },
+  { text: 'My Works', icon: <WorksIcon width={24} height={24} />, path: '/my-works' },
+  { text: 'Posts', icon: <PostsIcon width={24} height={24} />, path: '/posts' },
 ]
 
 interface SidebarProps {
@@ -60,24 +72,22 @@ export function Sidebar({ drawerWidth, isOpen, onToggle }: SidebarProps) {
 
   const drawer = (
     <>
-      <Toolbar 
+      <Toolbar
         sx={{
           paddingLeft: 0,
-        }}
-      >
-        <IconButton 
+        }}>
+        <IconButton
           onClick={onToggle}
           sx={{
             padding: 0,
             transform: isOpen ? 'rotate(0deg)' : 'rotate(180deg)',
             transition: 'transform 0.2s',
             mr: isOpen ? 0 : 'auto',
-          }}
-        >
+          }}>
           <MenuOpenIcon />
         </IconButton>
         {isOpen && (
-          <Logo >
+          <Logo>
             <Typography variant="h6" component="div" className="fast">
               Fast
             </Typography>
@@ -102,21 +112,27 @@ export function Sidebar({ drawerWidth, isOpen, onToggle }: SidebarProps) {
               px: 2.5,
               color: 'text.primary',
               textDecoration: 'none',
+              borderRadius: '8px',
+              margin: '4px 8px',
               '&.active': {
-                bgcolor: 'action.selected',
+                bgcolor: 'primary.main',
+                color: 'white',
                 '& .MuiListItemIcon-root': {
-                  color: 'primary.main',
+                  color: 'white',
                 },
               },
-            }}
-          >
+              '&:hover:not(.active)': {
+                bgcolor: 'rgba(156, 39, 176, 0.08)',
+                borderRadius: '8px',
+              },
+            }}>
             <ListItemIcon
               sx={{
                 minWidth: 0,
                 mr: isOpen ? 3 : 'auto',
                 justifyContent: 'center',
-              }}
-            >
+                color: 'inherit',
+              }}>
               {item.icon}
             </ListItemIcon>
             {isOpen && <ListItemText primary={item.text} />}
@@ -133,8 +149,7 @@ export function Sidebar({ drawerWidth, isOpen, onToggle }: SidebarProps) {
         width: { sm: isOpen ? drawerWidth : 72 },
         flexShrink: { sm: 0 },
         transition: 'width 0.2s',
-      }}
-    >
+      }}>
       <Drawer
         variant="temporary"
         open={mobileOpen}
@@ -144,8 +159,8 @@ export function Sidebar({ drawerWidth, isOpen, onToggle }: SidebarProps) {
         }}
         sx={{
           display: { xs: 'block', sm: 'none' },
-          '& .MuiDrawer-paper': { 
-            boxSizing: 'border-box', 
+          '& .MuiDrawer-paper': {
+            boxSizing: 'border-box',
             width: drawerWidth,
             backgroundColor: 'background.paper',
           },
@@ -163,10 +178,13 @@ export function Sidebar({ drawerWidth, isOpen, onToggle }: SidebarProps) {
             backgroundColor: 'background.paper',
             overflowX: 'hidden',
           },
+          '& .MuiPaper-root': {
+            backgroundColor: '#000',
+          },
         }}
         open>
         {drawer}
       </Drawer>
     </Box>
   )
-} 
+}
