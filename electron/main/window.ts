@@ -16,7 +16,7 @@ export class WindowManager {
     private preload: string,
     private indexHtml: string,
     private VITE_DEV_SERVER_URL: string | undefined,
-    private VITE_PUBLIC: string,
+    private VITE_PUBLIC: string
   ) {}
 
   async createWindow() {
@@ -34,7 +34,7 @@ export class WindowManager {
       transparent: false,
       show: false,
     })
-
+    this.win.maximize()
     this.setupWindowEvents()
     this.loadContent()
     update(this.win)
