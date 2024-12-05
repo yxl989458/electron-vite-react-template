@@ -97,7 +97,7 @@ _listenerMiddleware.startListening({
     _cleanupMode = applyMode(
       _canvas,
       () => listenerApi.getState() as RootState,
-      listenerApi.dispatch as AppDispatch
+      listenerApi.dispatch as AppDispatch,
     )
   },
 })

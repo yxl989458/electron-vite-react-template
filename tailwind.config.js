@@ -4,7 +4,7 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        'lucida': ['Lucida Grande', 'system-ui', 'sans-serif']
+        lucida: ['Lucida Grande', 'system-ui', 'sans-serif'],
       },
     },
   },

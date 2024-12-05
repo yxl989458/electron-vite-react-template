@@ -30,14 +30,15 @@ export function AIPlugins() {
                 transform: 'translateY(-2px)',
               },
             }}>
-            <Box sx={{ 
-              fontSize: 40, 
-              mb: 1,
-              color: 'primary.main',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}>
+            <Box
+              sx={{
+                fontSize: 40,
+                mb: 1,
+                color: 'primary.main',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}>
               {plugin.icon}
             </Box>
             <Typography variant="subtitle1" sx={{ color: 'text.primary' }}>
@@ -48,4 +49,4 @@ export function AIPlugins() {
       ))}
     </Grid>
   )
-} 
+}

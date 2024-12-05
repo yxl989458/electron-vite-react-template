@@ -14,16 +14,12 @@ export function MainLayout({ children }: { children: React.ReactNode }) {
   return (
     <Box sx={{ display: 'flex', fontWeight: 700 }}>
       <Header drawerWidth={isSidebarOpen ? drawerWidth : 72} />
-      <Sidebar 
-        drawerWidth={drawerWidth} 
-        isOpen={isSidebarOpen} 
-        onToggle={handleSidebarToggle} 
-      />
+      <Sidebar drawerWidth={drawerWidth} isOpen={isSidebarOpen} onToggle={handleSidebarToggle} />
       <Box
         component="main"
         sx={{
           padding: 3,
-          paddingTop:10,
+          paddingTop: 10,
           flexGrow: 1,
           bgcolor: '#1e1e20',
           minHeight: '100vh',
@@ -33,4 +29,4 @@ export function MainLayout({ children }: { children: React.ReactNode }) {
       </Box>
     </Box>
   )
-} 
+}

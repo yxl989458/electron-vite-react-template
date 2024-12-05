@@ -1,7 +1,5 @@
-
-
-import { RootState } from "@/drawingBoard/app/store"
-import { createSlice, PayloadAction } from "@reduxjs/toolkit"
+import { RootState } from '@/drawingBoard/app/store'
+import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 export interface ControllerPanelState {
   show: boolean
@@ -15,7 +13,7 @@ const initialState: ControllerPanelState = {
 
 export const controllerPanelSlice = createSlice({
   name: 'controllerPanel',
- initialState,
+  initialState,
   reducers: {
     showControllerPanel: (state) => {
       state.show = true
@@ -29,8 +27,8 @@ export const controllerPanelSlice = createSlice({
   },
 })
 
-
-export const { showControllerPanel, hideControllerPanel, setControllerPanelPosition } = controllerPanelSlice.actions
+export const { showControllerPanel, hideControllerPanel, setControllerPanelPosition } =
+  controllerPanelSlice.actions
 
 export const getControllerPanel = (state: RootState) => state.controllerPanel
 

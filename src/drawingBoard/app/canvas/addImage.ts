@@ -32,13 +32,13 @@ export const addImageToCanvas = async (file: File) => {
         // 如果图片是横向的或方形的
         scale = Math.min(
           Math.max(TARGET_MIN_SIZE / img.width!, TARGET_MAX_SIZE / img.width!),
-          1 // 不要放大图片
+          1, // 不要放大图片
         )
       } else {
         // 如果图片是纵向的
         scale = Math.min(
           Math.max(TARGET_MIN_SIZE / img.height!, TARGET_MAX_SIZE / img.height!),
-          1 // 不要放大图片
+          1, // 不要放大图片
         )
       }
       img.scale(scale)

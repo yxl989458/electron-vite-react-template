@@ -14,7 +14,7 @@ export const router = createBrowserRouter([
       },
       {
         path: '/ai-apps',
-        element: <div>AI Apps</div>,
+        element: <CanvasWrapperPlan />,
       },
       {
         path: '/ai-plugins',
@@ -42,4 +42,4 @@ export const router = createBrowserRouter([
       },
     ],
   },
-]) 
+])

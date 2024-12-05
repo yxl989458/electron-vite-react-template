@@ -32,7 +32,7 @@ export const drawRectMode: ApplyCanvasModeFunc<RectOptions> = (canvas, getState)
       transparentCorners: false,
       selectable: true,
       hasControls: false,
-      hasBorders: false
+      hasBorders: false,
     })
   }
 
@@ -46,7 +46,7 @@ export const drawRectMode: ApplyCanvasModeFunc<RectOptions> = (canvas, getState)
       left,
       top,
       width,
-      height
+      height,
     })
   }
 
@@ -76,14 +76,13 @@ export const drawRectMode: ApplyCanvasModeFunc<RectOptions> = (canvas, getState)
     if (!isDrawing || !currentRect) return
 
     isDrawing = false
-    
+
     if (currentRect.width === 0 || currentRect.height === 0) {
       canvas.remove(currentRect)
     }
-    
+
     currentRect = null
   })
-
 
   return () => {
     canvas.off('mouse:down')

@@ -120,5 +120,3 @@ process.on('unhandledRejection', (error) => {
 app.on('will-quit', () => {
   captureScreen.dispose()
 })
-
-

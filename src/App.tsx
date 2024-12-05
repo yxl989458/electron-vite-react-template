@@ -1,4 +1,4 @@
-import {  createTheme } from '@mui/material';
+import { createTheme } from '@mui/material'
 import { MainLayout } from './layouts/MainLayout'
 import { Routes, Route, Outlet } from 'react-router-dom'
 import { CanvasWrapper } from './drawingBoard/features/canvas/CanvasWrapper'
@@ -11,13 +11,13 @@ const darkTheme = createTheme({
       paper: '#2A2A2A',
     },
   },
-});
+})
 
 function App() {
   return (
-      <MainLayout>
-        <Outlet />
-      </MainLayout>
+    <MainLayout>
+      <Outlet />
+    </MainLayout>
   )
 }
 

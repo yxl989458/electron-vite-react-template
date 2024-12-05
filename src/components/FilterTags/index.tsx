@@ -8,11 +8,11 @@ interface FilterTagsProps {
 
 export function FilterTags({ tags, selectedTag, onTagSelect }: FilterTagsProps) {
   return (
-    <Box 
-      sx={{ 
-        display: 'flex', 
-        gap: 1, 
-        flexWrap: 'wrap', 
+    <Box
+      sx={{
+        display: 'flex',
+        gap: 1,
+        flexWrap: 'wrap',
         mb: 3,
         '& .MuiChip-root': {
           borderRadius: '16px',
@@ -24,8 +24,8 @@ export function FilterTags({ tags, selectedTag, onTagSelect }: FilterTagsProps) 
           },
           '&.Mui-selected': {
             backgroundColor: 'primary.main',
-          }
-        }
+          },
+        },
       }}>
       {tags.map((tag) => (
         <Chip
@@ -39,4 +39,4 @@ export function FilterTags({ tags, selectedTag, onTagSelect }: FilterTagsProps) 
       ))}
     </Box>
   )
-} 
+}

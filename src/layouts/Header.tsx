@@ -1,4 +1,19 @@
-import { AppBar, Toolbar,IconButton as MuiIconButton, InputBase, Box, Avatar, Menu, MenuItem, Badge, Popover, Typography, Fade, Chip, Tooltip } from '@mui/material'
+import {
+  AppBar,
+  Toolbar,
+  IconButton as MuiIconButton,
+  InputBase,
+  Box,
+  Avatar,
+  Menu,
+  MenuItem,
+  Badge,
+  Popover,
+  Typography,
+  Fade,
+  Chip,
+  Tooltip,
+} from '@mui/material'
 import { styled, alpha } from '@mui/material/styles'
 import { useState, useCallback } from 'react'
 import SearchIcon from '@mui/icons-material/Search'
@@ -55,8 +70,6 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }))
 
-
-
 const UserBox = styled(Box)(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
@@ -109,7 +122,7 @@ const notifications: Notification[] = [
     title: 'New Message',
     description: 'John Doe sent you a message',
     time: '5 min ago',
-    read: false
+    read: false,
   },
   {
     id: 2,
@@ -117,7 +130,7 @@ const notifications: Notification[] = [
     title: 'Task Completed',
     description: 'Your image has been generated successfully',
     time: '10 min ago',
-    read: false
+    read: false,
   },
   {
     id: 3,
@@ -125,7 +138,7 @@ const notifications: Notification[] = [
     title: 'Storage Alert',
     description: 'Your storage is almost full',
     time: '1 hour ago',
-    read: true
+    read: true,
   },
   {
     id: 4,
@@ -133,8 +146,8 @@ const notifications: Notification[] = [
     title: 'System Update',
     description: 'New version is available',
     time: '2 hours ago',
-    read: true
-  }
+    read: true,
+  },
 ]
 
 const NotificationItem = styled(Box)(({ theme }) => ({
@@ -149,7 +162,7 @@ const NotificationItem = styled(Box)(({ theme }) => ({
   },
   '&:not(:last-child)': {
     borderBottom: `1px solid ${theme.palette.divider}`,
-  }
+  },
 }))
 
 export function Header({ drawerWidth }: { drawerWidth: number }) {
@@ -158,23 +171,21 @@ export function Header({ drawerWidth }: { drawerWidth: number }) {
   const [notificationsList, setNotificationsList] = useState(notifications)
   const [selectedFilter, setSelectedFilter] = useState<string>('all')
 
-  const unreadCount = notificationsList.filter(n => !n.read).length
+  const unreadCount = notificationsList.filter((n) => !n.read).length
 
   const handleMarkAllRead = useCallback(() => {
-    setNotificationsList(prev => 
-      prev.map(notification => ({ ...notification, read: true }))
-    )
+    setNotificationsList((prev) => prev.map((notification) => ({ ...notification, read: true })))
   }, [])
 
   const handleMarkAsRead = useCallback((id: number) => {
-    setNotificationsList(prev =>
-      prev.map(notification =>
-        notification.id === id ? { ...notification, read: true } : notification
-      )
+    setNotificationsList((prev) =>
+      prev.map((notification) =>
+        notification.id === id ? { ...notification, read: true } : notification,
+      ),
     )
   }, [])
 
-  const filteredNotifications = notificationsList.filter(notification => {
+  const filteredNotifications = notificationsList.filter((notification) => {
     if (selectedFilter === 'all') return true
     if (selectedFilter === 'unread') return !notification.read
     return notification.type === selectedFilter
@@ -217,10 +228,7 @@ export function Header({ drawerWidth }: { drawerWidth: number }) {
           <SearchIconWrapper>
             <SearchIcon />
           </SearchIconWrapper>
-          <StyledInputBase
-            placeholder="Search…"
-            inputProps={{ 'aria-label': 'search' }}
-          />
+          <StyledInputBase placeholder="Search…" inputProps={{ 'aria-label': 'search' }} />
         </Search>
 
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
@@ -250,18 +258,15 @@ export function Header({ drawerWidth }: { drawerWidth: number }) {
           </IconButton>
 
           <UserBox onClick={handleUserMenuOpen}>
-            <Box sx={{ 
-              display: { xs: 'none', sm: 'block' },
-              color: 'text.secondary',
-              fontSize: '0.875rem'
-            }}>
+            <Box
+              sx={{
+                display: { xs: 'none', sm: 'block' },
+                color: 'text.secondary',
+                fontSize: '0.875rem',
+              }}>
               nash_su
             </Box>
-            <Avatar
-              sx={{ width: 32, height: 32 }}
-              alt="User Avatar"
-              src="/path/to/avatar.jpg"
-            />
+            <Avatar sx={{ width: 32, height: 32 }} alt="User Avatar" src="/path/to/avatar.jpg" />
             <KeyboardArrowDownIcon sx={{ color: 'text.secondary', fontSize: 20 }} />
           </UserBox>
         </Box>
@@ -275,9 +280,8 @@ export function Header({ drawerWidth }: { drawerWidth: number }) {
               mt: 1.5,
               minWidth: 180,
               backgroundColor: 'background.paper',
-            }
-          }}
-        >
+            },
+          }}>
           <MenuItem onClick={() => setUserMenuAnchor(null)}>
             <PersonOutlineIcon sx={{ mr: 1.5, fontSize: 20 }} />
             Profile
@@ -314,18 +318,18 @@ export function Header({ drawerWidth }: { drawerWidth: number }) {
               backgroundColor: 'background.paper',
               overflow: 'hidden',
               borderRadius: 2,
-            }
-          }}
-        >
+            },
+          }}>
           <Box>
-            <Box sx={{ 
-              p: 2, 
-              display: 'flex', 
-              alignItems: 'center', 
-              justifyContent: 'space-between',
-              borderBottom: '1px solid',
-              borderColor: 'divider'
-            }}>
+            <Box
+              sx={{
+                p: 2,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                borderBottom: '1px solid',
+                borderColor: 'divider',
+              }}>
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                 <Typography variant="h6">Notifications</Typography>
                 {unreadCount > 0 && (
@@ -336,28 +340,28 @@ export function Header({ drawerWidth }: { drawerWidth: number }) {
                   </Tooltip>
                 )}
               </Box>
-              <Typography 
-                variant="caption" 
-                sx={{ 
+              <Typography
+                variant="caption"
+                sx={{
                   color: 'text.secondary',
                   display: 'flex',
                   alignItems: 'center',
-                  gap: 0.5
-                }}
-              >
+                  gap: 0.5,
+                }}>
                 <AccessTimeIcon fontSize="inherit" />
                 Updated 2m ago
               </Typography>
             </Box>
 
-            <Box sx={{ 
-              p: 1.5, 
-              display: 'flex', 
-              gap: 1, 
-              overflowX: 'auto',
-              borderBottom: '1px solid',
-              borderColor: 'divider'
-            }}>
+            <Box
+              sx={{
+                p: 1.5,
+                display: 'flex',
+                gap: 1,
+                overflowX: 'auto',
+                borderBottom: '1px solid',
+                borderColor: 'divider',
+              }}>
               {['all', 'unread', 'message', 'success', 'warning', 'info'].map((filter) => (
                 <FilterChip
                   key={filter}
@@ -369,9 +373,9 @@ export function Header({ drawerWidth }: { drawerWidth: number }) {
               ))}
             </Box>
 
-            <Box 
-              sx={{ 
-                maxHeight: 400, 
+            <Box
+              sx={{
+                maxHeight: 400,
                 overflow: 'auto',
                 position: 'relative',
                 '&:after': {
@@ -383,42 +387,46 @@ export function Header({ drawerWidth }: { drawerWidth: number }) {
                   height: '4px',
                   background: 'linear-gradient(180deg, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0) 100%)',
                   pointerEvents: 'none',
-                }
-              }}
-            >
+                },
+              }}>
               {filteredNotifications.length === 0 ? (
                 <Box sx={{ p: 4, textAlign: 'center', color: 'text.secondary' }}>
                   <Typography variant="body2">No notifications found</Typography>
                 </Box>
               ) : (
                 filteredNotifications.map((notification) => (
-                  <NotificationItem 
+                  <NotificationItem
                     key={notification.id}
-                    onClick={() => handleMarkAsRead(notification.id)}
-                  >
+                    onClick={() => handleMarkAsRead(notification.id)}>
                     {getNotificationIcon(notification.type)}
                     <Box sx={{ flex: 1, minWidth: 0 }}>
-                      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-                        <Typography variant="subtitle2" sx={{ 
-                          fontWeight: notification.read ? 400 : 600,
-                          color: notification.read ? 'text.secondary' : 'text.primary'
+                      <Box
+                        sx={{
+                          display: 'flex',
+                          justifyContent: 'space-between',
+                          alignItems: 'flex-start',
                         }}>
+                        <Typography
+                          variant="subtitle2"
+                          sx={{
+                            fontWeight: notification.read ? 400 : 600,
+                            color: notification.read ? 'text.secondary' : 'text.primary',
+                          }}>
                           {notification.title}
                         </Typography>
                         <Typography variant="caption" sx={{ color: 'text.secondary', ml: 1 }}>
                           {notification.time}
                         </Typography>
                       </Box>
-                      <Typography 
-                        variant="body2" 
-                        sx={{ 
+                      <Typography
+                        variant="body2"
+                        sx={{
                           color: 'text.secondary',
                           mt: 0.5,
                           overflow: 'hidden',
                           textOverflow: 'ellipsis',
-                          whiteSpace: 'nowrap'
-                        }}
-                      >
+                          whiteSpace: 'nowrap',
+                        }}>
                         {notification.description}
                       </Typography>
                     </Box>
@@ -427,21 +435,21 @@ export function Header({ drawerWidth }: { drawerWidth: number }) {
               )}
             </Box>
 
-            <Box sx={{ 
-              p: 1.5, 
-              borderTop: '1px solid',
-              borderColor: 'divider',
-              display: 'flex',
-              justifyContent: 'center'
-            }}>
-              <Typography 
-                variant="button" 
-                sx={{ 
+            <Box
+              sx={{
+                p: 1.5,
+                borderTop: '1px solid',
+                borderColor: 'divider',
+                display: 'flex',
+                justifyContent: 'center',
+              }}>
+              <Typography
+                variant="button"
+                sx={{
                   color: 'primary.main',
                   cursor: 'pointer',
-                  '&:hover': { textDecoration: 'underline' }
-                }}
-              >
+                  '&:hover': { textDecoration: 'underline' },
+                }}>
                 View All Notifications
               </Typography>
             </Box>
@@ -450,4 +458,4 @@ export function Header({ drawerWidth }: { drawerWidth: number }) {
       </Toolbar>
     </AppBar>
   )
-} 
+}

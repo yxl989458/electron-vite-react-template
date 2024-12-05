@@ -46,4 +46,4 @@ export function AICard({ title, image, type, beforeImage, afterImage }: AICardPr
       </CardContent>
     </Card>
   )
-} 
+}

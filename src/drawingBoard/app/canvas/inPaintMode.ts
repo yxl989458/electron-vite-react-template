@@ -63,12 +63,12 @@ export const darwinPaint: ApplyCanvasModeFunc<undefined> = (canvas, getState, di
     return new fabric.Point(
       Math.min(
         Math.max(pointer.x, imageBounds.left + offset),
-        imageBounds.left + imageBounds.width - offset
+        imageBounds.left + imageBounds.width - offset,
       ),
       Math.min(
         Math.max(pointer.y, imageBounds.top + offset),
-        imageBounds.top + imageBounds.height - offset
-      )
+        imageBounds.top + imageBounds.height - offset,
+      ),
     )
   }
 
