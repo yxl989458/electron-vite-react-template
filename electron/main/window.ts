@@ -9,7 +9,7 @@ export type StoreType = {
 
 export class WindowManager {
   private win: BrowserWindow | null = null
-  private isQuitting = false
+  public isQuitting = false
 
   constructor(
     private store: Store<StoreType>,
@@ -75,7 +75,12 @@ export class WindowManager {
     const skipConfirmation = this.store.get('skipCloseConfirmation', false)
 
     if (skipConfirmation) {
-      this.win?.hide()
+      if (process.platform === 'darwin') {
+        this.win?.hide()
+      } else {
+        this.setQuitting(true)
+        app.quit()
+      }
       return
     }
 
@@ -102,11 +107,8 @@ export class WindowManager {
         this.win?.hide()
         break
       case 1:
-        this.isQuitting = true
-        this.win?.destroy()
-        setImmediate(() => {
-          app.quit()
-        })
+        this.setQuitting(true)
+        app.quit()
         break
     }
   }
@@ -128,8 +130,19 @@ export class WindowManager {
 
   setQuitting(value: boolean) {
     this.isQuitting = value
-    if (value) {
-      this.win?.destroy()
+    if (value && this.win) {
+      this.win.destroy()
+    }
+  }
+
+  public showWindow() {
+    const win = this.getWindow()
+    if (win) {
+      if (win.isMinimized()) win.restore()
+      win.show()
+      win.focus()
+    } else {
+      this.createWindow()
     }
   }
 }

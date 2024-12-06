@@ -27,7 +27,7 @@ export class TrayManager {
       {
         label: '打开主界面',
         click: () => {
-          this.windowManager.getWindow()?.show()
+          this.windowManager.showWindow()
         },
       },
       { type: 'separator' },
@@ -87,9 +87,7 @@ export class TrayManager {
 
           if (choice.response === 0) {
             this.windowManager.setQuitting(true)
-            setImmediate(() => {
-              app.quit()
-            })
+            app.quit()
           }
         },
       },
@@ -103,12 +101,7 @@ export class TrayManager {
     if (!this.tray) return
 
     this.tray.on('double-click', () => {
-      const win = this.windowManager.getWindow()
-      if (win?.isVisible()) {
-        win.focus()
-      } else {
-        win?.show()
-      }
+      this.windowManager.showWindow()
     })
   }
 }

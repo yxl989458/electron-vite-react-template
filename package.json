@@ -34,7 +34,6 @@
     "@types/react-dom": "^18.0.6",
     "electron-store": "8.2.0",
     "electron-updater": "^6.3.9",
-    "electron-vite-react": "file:",
     "fabric": "^5.2.1",
     "react": "^18.2.0",
     "react-color": "^2.19.3",

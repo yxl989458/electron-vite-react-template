@@ -37,18 +37,18 @@ const store = new Store<StoreType>({
 })
 export const preload = path.join(__dirname, '../preload/index.mjs')
 export const indexHtml = path.join(RENDERER_DIST, 'index.html')
+console.log(indexHtml)
 
 let windowManager: WindowManager
 let trayManager: TrayManager
 let captureScreen: CaptureScreen
 async function init() {
-  console.log('init', VITE_DEV_SERVER_URL)
   windowManager = new WindowManager(
     store,
     preload,
     indexHtml,
     VITE_DEV_SERVER_URL,
-    process.env.VITE_PUBLIC,
+    process.env.VITE_PUBLIC
   )
   globalShortcut.register('F12', () => {
     windowManager.getWindow()?.webContents.toggleDevTools()
@@ -56,11 +56,23 @@ async function init() {
 
   try {
     const win = await windowManager.createWindow()
+    
+    win.on('close', (event) => {
+      if (process.platform === 'darwin' && !windowManager.isQuitting) {
+        event.preventDefault()
+        win.hide()
+      }
+    })
+
+    app.on('before-quit', () => {
+      windowManager.setQuitting(true)
+    })
+
     trayManager = new TrayManager(store, windowManager, process.env.VITE_PUBLIC)
-    await trayManager.createTray() // 添加 await 以确保错误被捕获
+    await trayManager.createTray()
     captureScreen = new CaptureScreen()
   } catch (error) {
-    console.error('Failed to initialize:', error) // 捕获并打印初始化错误
+    console.error('Failed to initialize:', error)
   }
 }
 
@@ -81,9 +93,9 @@ app.on('second-instance', () => {
 })
 
 app.on('activate', () => {
-  const allWindows = BrowserWindow.getAllWindows()
-  if (allWindows.length) {
-    allWindows[0].focus()
+  const win = windowManager.getWindow()
+  if (win) {
+    win.show()
   } else {
     windowManager.createWindow()
   }
