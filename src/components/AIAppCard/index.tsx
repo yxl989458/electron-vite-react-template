@@ -32,7 +32,6 @@ export const AIAppCard = ({ apps }: AIAppCardProps) => {
               component='img'
                 className='w-full h-[160px] object-cover'
                 src={app.image}
-                alt={app.title}
               />
               <Box sx={{ p: 1.5 }}>
                 <Typography
