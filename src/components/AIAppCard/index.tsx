@@ -28,8 +28,9 @@ export const AIAppCard = ({ apps }: AIAppCardProps) => {
                   transform: 'translateY(-4px)',
                 },
               }}>
-              <img
-                className='w-full h-[160px] object-fill'
+              <Box
+              component='img'
+                className='w-full h-[160px] object-cover'
                 src={app.image}
                 alt={app.title}
               />
