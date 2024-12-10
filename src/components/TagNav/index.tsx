@@ -52,12 +52,10 @@ export const TagNav = ({ tags, onChange, defaultValue = 'all' }: TagNavProps) =>
   }
 
   return (
-    <Box>
-      <StyledTabs value={value} onChange={handleChange} variant="scrollable" scrollButtons="auto">
-        {tags.map((tag) => (
-          <StyledTab key={tag.value} label={tag.label} value={tag.value} />
-        ))}
-      </StyledTabs>
-    </Box>
+    <StyledTabs value={value} onChange={handleChange} variant="scrollable" scrollButtons={false}>
+      {tags.map((tag) => (
+        <StyledTab key={tag.value} label={tag.label} value={tag.value} />
+      ))}
+    </StyledTabs>
   )
 }

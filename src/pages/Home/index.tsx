@@ -20,6 +20,7 @@ import { AIFeatureGrid } from '@/components/AIFeatureGrid'
 import { aiFeatures } from '@/data/aiFeatures'
 import { AIAppCard } from '@/components/AIAppCard'
 import { aiApps } from '@/data/aiApps'
+import Title from '@/components/Title'
 
 const tags = [
   { label: 'all', value: 'all' },
@@ -141,16 +142,19 @@ const HomePage = () => {
           />
         </Stack>
       </Box>
-      <Box>
-        <Stack spacing={2} direction="row" justifyContent="space-between" alignItems="center">
-          <Typography sx={{ color: '#fff', fontSize: '24px' }}>Free AI Apps</Typography>
-          <Stack direction="row" spacing={6} alignItems="center">
+        <Grid container justifyContent={'space-between'} alignItems="center">
+          <Grid item xs='auto'>
+            <Title title="Free AI Apps" />
+          </Grid>
+          <Grid item xs={10}>
             <TagNav tags={tags} onChange={handleTagChange} defaultValue="all" />
+          </Grid>
+          <Grid item xs='auto' justifySelf='flex-end'>
             <IconButton>
               <MoreHorizIcon />
             </IconButton>
-          </Stack>
-        </Stack>
+          </Grid>
+        </Grid>
         <Box sx={{ mt: 3 }}>
           <AIAppCard apps={aiApps} />
         </Box>
@@ -173,7 +177,6 @@ const HomePage = () => {
             <Typography sx={{ color: '#fff' }}>View All Free AI Apps ( 325 ) →</Typography>
           </Box>
         </Link>
-      </Box>
     </Stack>
   )
 }
