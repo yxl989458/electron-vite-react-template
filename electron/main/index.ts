@@ -48,7 +48,7 @@ async function init() {
     preload,
     indexHtml,
     VITE_DEV_SERVER_URL,
-    process.env.VITE_PUBLIC
+    process.env.VITE_PUBLIC,
   )
   globalShortcut.register('F12', () => {
     windowManager.getWindow()?.webContents.toggleDevTools()
@@ -56,7 +56,7 @@ async function init() {
 
   try {
     const win = await windowManager.createWindow()
-    
+
     win.on('close', (event) => {
       if (process.platform === 'darwin' && !windowManager.isQuitting) {
         event.preventDefault()

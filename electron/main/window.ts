@@ -16,7 +16,7 @@ export class WindowManager {
     private preload: string,
     private indexHtml: string,
     private VITE_DEV_SERVER_URL: string | undefined,
-    private VITE_PUBLIC: string
+    private VITE_PUBLIC: string,
   ) {}
 
   async createWindow() {

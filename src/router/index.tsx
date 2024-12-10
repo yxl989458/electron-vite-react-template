@@ -18,14 +18,12 @@ function LoadingFallback() {
 // 错误边界组件
 function ErrorBoundary() {
   const error = useRouteError()
-  
+
   return (
     <div className="flex min-h-screen items-center justify-center p-4">
       <div className="text-center">
         <h1 className="text-2xl font-bold mb-4">抱歉，出现了一些问题</h1>
-        <p className="text-gray-600">
-          {error instanceof Error ? error.message : '页面未找到'}
-        </p>
+        <p className="text-gray-600">{error instanceof Error ? error.message : '页面未找到'}</p>
       </div>
     </div>
   )
@@ -52,7 +50,7 @@ export const router = createHashRouter([
           <Suspense fallback={<LoadingFallback />}>
             <HomePage />
           </Suspense>
-        )
+        ),
       },
       {
         path: '/ai-apps',
@@ -60,32 +58,32 @@ export const router = createHashRouter([
           <Suspense fallback={<LoadingFallback />}>
             <CanvasWrapper />
           </Suspense>
-        )
+        ),
       },
       {
         path: '/ai-plugins',
-        element: <PlaceholderPage title="AI Plugins" />
+        element: <PlaceholderPage title="AI Plugins" />,
       },
       {
         path: '/create-image',
-        element: <PlaceholderPage title="Create Image" />
+        element: <PlaceholderPage title="Create Image" />,
       },
       {
         path: '/models',
-        element: <PlaceholderPage title="Models" />
+        element: <PlaceholderPage title="Models" />,
       },
       {
         path: '/comfyui',
-        element: <PlaceholderPage title="ComfyUI" />
+        element: <PlaceholderPage title="ComfyUI" />,
       },
       {
         path: '/my-works',
-        element: <PlaceholderPage title="My Works" />
+        element: <PlaceholderPage title="My Works" />,
       },
       {
         path: '/posts',
-        element: <PlaceholderPage title="Posts" />
-      }
-    ]
-  }
+        element: <PlaceholderPage title="Posts" />,
+      },
+    ],
+  },
 ])

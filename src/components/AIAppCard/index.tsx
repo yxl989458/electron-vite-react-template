@@ -14,9 +14,9 @@ interface AIAppCardProps {
 
 export const AIAppCard = ({ apps }: AIAppCardProps) => {
   return (
-    <Grid container spacing={2} >
+    <Grid container spacing={2}>
       {apps.map((app) => (
-        <Grid item sm={6} md={4} lg={3} xl={2} xs={12}   key={app.id}>
+        <Grid item sm={6} md={4} lg={3} xl={2} xs={12} key={app.id}>
           <Link to={app.to} style={{ textDecoration: 'none' }}>
             <Box
               sx={{
@@ -28,11 +28,7 @@ export const AIAppCard = ({ apps }: AIAppCardProps) => {
                   transform: 'translateY(-4px)',
                 },
               }}>
-              <Box
-              component='img'
-                className='w-full h-[160px] object-cover'
-                src={app.image}
-              />
+              <Box component="img" className="w-full h-[160px] object-cover" src={app.image} />
               <Box sx={{ p: 1.5 }}>
                 <Typography
                   sx={{

@@ -142,41 +142,41 @@ const HomePage = () => {
           />
         </Stack>
       </Box>
-        <Grid container justifyContent={'space-between'} alignItems="center">
-          <Grid item xs='auto'>
-            <Title title="Free AI Apps" />
-          </Grid>
-          <Grid item xs={10}>
-            <TagNav tags={tags} onChange={handleTagChange} defaultValue="all" />
-          </Grid>
-          <Grid item xs='auto' justifySelf='flex-end'>
-            <IconButton>
-              <MoreHorizIcon />
-            </IconButton>
-          </Grid>
+      <Grid container justifyContent={'space-between'} alignItems="center">
+        <Grid item xs="auto">
+          <Title title="Free AI Apps" />
         </Grid>
-        <Box sx={{ mt: 3 }}>
-          <AIAppCard apps={aiApps} />
+        <Grid item xs={10}>
+          <TagNav tags={tags} onChange={handleTagChange} defaultValue="all" />
+        </Grid>
+        <Grid item xs="auto" justifySelf="flex-end">
+          <IconButton>
+            <MoreHorizIcon />
+          </IconButton>
+        </Grid>
+      </Grid>
+      <Box sx={{ mt: 3 }}>
+        <AIAppCard apps={aiApps} />
+      </Box>
+      <Link to="/ai-gallery" style={{ textDecoration: 'none' }}>
+        <Box
+          sx={{
+            mt: 3,
+            p: 2,
+            borderRadius: '8px',
+            border: '1px solid rgba(255, 255, 255, 0.1)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            cursor: 'pointer',
+            transition: 'background-color 0.2s',
+            '&:hover': {
+              backgroundColor: 'rgba(255, 255, 255, 0.05)',
+            },
+          }}>
+          <Typography sx={{ color: '#fff' }}>View All Free AI Apps ( 325 ) →</Typography>
         </Box>
-        <Link to="/ai-gallery" style={{ textDecoration: 'none' }}>
-          <Box
-            sx={{
-              mt: 3,
-              p: 2,
-              borderRadius: '8px',
-              border: '1px solid rgba(255, 255, 255, 0.1)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              cursor: 'pointer',
-              transition: 'background-color 0.2s',
-              '&:hover': {
-                backgroundColor: 'rgba(255, 255, 255, 0.05)',
-              },
-            }}>
-            <Typography sx={{ color: '#fff' }}>View All Free AI Apps ( 325 ) →</Typography>
-          </Box>
-        </Link>
+      </Link>
     </Stack>
   )
 }
