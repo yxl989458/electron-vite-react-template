@@ -23,16 +23,10 @@ export const drawRectMode: ApplyCanvasModeFunc<RectOptions> = (canvas, getState)
       top: pointer.y,
       originX: 'left',
       originY: 'top',
-      width: 0,
-      height: 0,
-      angle: 0,
       fill: fillColor,
       stroke: strokeColor,
       strokeWidth: strokeSize,
       transparentCorners: false,
-      selectable: true,
-      hasControls: false,
-      hasBorders: false,
     })
   }
 

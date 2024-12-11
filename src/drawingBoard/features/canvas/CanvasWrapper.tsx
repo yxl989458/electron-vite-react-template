@@ -9,7 +9,7 @@ export const CanvasWrapper = () => {
   const dispatch = useAppDispatch()
 
   useEffect(() => {
-    const canvas = new fabric.Canvas(canvasEl.current, { selection: false })
+    const canvas = new fabric.Canvas(canvasEl.current, { selection: false, stopContextMenu: true })
 
     //The only direct interaction. Required to pass canvas object to the middleware
     initializeCanvasEffect(canvas, dispatch)

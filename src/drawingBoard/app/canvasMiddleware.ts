@@ -16,6 +16,7 @@ import { strokeColorSelected, strokeSizeSelected } from '../features/optionsPane
 import { shapeRemoved, shapesUpdated } from '../features/shapesPanel/shapesPanelSlice'
 import { Tool, toolSelected } from '../features/toolsPanel/toolsPanelSlice'
 import { ApplyCanvasModeFunc } from './canvas/canvasMode'
+import initControls from './canvas/initControls'
 
 // 创建中间件
 const _listenerMiddleware = createListenerMiddleware()
@@ -26,6 +27,27 @@ export let _canvas: fabric.Canvas
 
 export const initializeCanvasEffect = (canvas: fabric.Canvas, dispatch: AppDispatch) => {
   _canvas = canvas
+  initControls(_canvas)
+
+  canvas.on('mouse:wheel', opt => {
+    opt.e.preventDefault()
+    const delta = opt.e.deltaY // 滚轮，向上滚一下是 -100，向下滚一下是 100
+    let zoom = canvas.getZoom() // 获取画布当前缩放值
+    zoom *= 0.999 ** delta
+    if (zoom > 20) zoom = 20 // 限制最大缩放级别
+    if (zoom < 0.01) zoom = 0.01 // 限制最小缩放级别
+
+    // 以鼠标所在位置为原点缩放
+    canvas.zoomToPoint(
+      { // 关键点
+        x: opt.e.offsetX,
+        y: opt.e.offsetY
+      },
+      zoom // 传入修改后的缩放级别
+    )
+  })
+
+
   _canvas.freeDrawingBrush.width = 1
   document.onkeydown = function (e) {
     switch (e.key) {
