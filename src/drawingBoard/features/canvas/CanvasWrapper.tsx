@@ -1,8 +1,9 @@
 import { fabric } from 'fabric'
 import { useEffect, useRef } from 'react'
-import { initializeCanvasEffect } from '../../app/canvasMiddleware'
+import { _canvas, initializeCanvasEffect } from '../../app/canvasMiddleware'
 import { useAppDispatch } from '../../app/hooks'
 import { ControllerPanel } from '../controllerPanel/controllerPanel'
+import MenuPanel from '../menuSildeModePanel/menuSildePanel'
 export const CanvasWrapper = () => {
   const canvasEl = useRef(null)
   const containerEl = useRef(null)
@@ -13,6 +14,7 @@ export const CanvasWrapper = () => {
 
     //The only direct interaction. Required to pass canvas object to the middleware
     initializeCanvasEffect(canvas, dispatch)
+
     return () => {
       canvas.dispose()
       console.log('Canvas Disposed')
@@ -28,6 +30,7 @@ export const CanvasWrapper = () => {
         className="bg-gray-400/20 border absolute inset-0 border-blue-500"
       />
       <ControllerPanel />
+      <MenuPanel />
     </div>
   )
 }

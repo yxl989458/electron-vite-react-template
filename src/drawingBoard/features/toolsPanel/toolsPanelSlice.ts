@@ -10,6 +10,7 @@ export type Tool =
   | 'text'
   | 'in paint'
   | 'expand'
+  | 'menu side panel'
 
 export interface ToolsState {
   selectedTool: Tool

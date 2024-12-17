@@ -12,11 +12,13 @@ import { textMode as applyTextMode } from './canvas/textboxMode'
 import { AppDispatch, RootState } from './store'
 import { expandMode as applyExpandMode } from './canvas/expandMode'
 
-import { strokeColorSelected, strokeSizeSelected } from '../features/optionsPanel/optionsPanelSlice'
+import { OptionsState, strokeColorSelected, strokeSizeSelected } from '../features/optionsPanel/optionsPanelSlice'
 import { shapeRemoved, shapesUpdated } from '../features/shapesPanel/shapesPanelSlice'
 import { Tool, toolSelected } from '../features/toolsPanel/toolsPanelSlice'
 import { ApplyCanvasModeFunc } from './canvas/canvasMode'
 import initControls from '../core/initControls'
+import {  BoundingRect, setActiveObjectBoundingRect, setMenuSidePanelVisible } from '../features/menuSildeModePanel/menuSildeSlice'
+import { menuSidePanelMode as applyMenuSidePanelMode } from './canvas/menuSildeMode'
 
 // 创建中间件
 const _listenerMiddleware = createListenerMiddleware()
@@ -29,39 +31,58 @@ export const initializeCanvasEffect = (canvas: fabric.Canvas, dispatch: AppDispa
   _canvas = canvas
   initControls(_canvas)
 
+
+  canvas.on('selection:created', (options) => {
+    console.log('selection:created', options);
+    if (options.selected && !options.selected.length) return
+    dispatch(setMenuSidePanelVisible(true))
+    dispatch(setActiveObjectBoundingRect(options.selected![0].getBoundingRect()))
+ 
+  })
+  canvas.on('selection:updated', (options) => {
+    console.log('selection:updated', options);
+    dispatch(setActiveObjectBoundingRect(options.selected![0].getBoundingRect()))
+  })
+
+  canvas.on('selection:cleared', (options) => {
+    console.log('selection:cleared', options);
+    dispatch(setMenuSidePanelVisible(false))
+  })
+
   canvas.on('mouse:wheel', opt => {
     opt.e.preventDefault()
     if (!opt.e.altKey) return
-    const delta = opt.e.deltaY // 滚轮，向上滚一下是 -100，向下滚一下是 100
-    let zoom = canvas.getZoom() // 获取画布当前缩放值
+    const delta = opt.e.deltaY
+    let zoom = canvas.getZoom() 
     zoom *= 0.999 ** delta
-    if (zoom > 20) zoom = 20 // 限制最大缩放级别
-    if (zoom < 0.01) zoom = 0.01 // 限制最小缩放级别
+    if (zoom > 20) zoom = 20 
+    if (zoom < 0.01) zoom = 0.01 
 
-    // 以鼠标所在位置为原点缩放
     canvas.zoomToPoint(
       { // 关键点
         x: opt.e.offsetX,
         y: opt.e.offsetY
       },
-      zoom // 传入修改后的缩放级别
+      zoom 
     )
   })
+
+
+
+
+
 
 
   _canvas.freeDrawingBrush.width = 1
   document.onkeydown = function (e) {
     switch (e.key) {
       case 'Delete':
-        // 当按下删除键时，我们会为每个选中的对象触发删除事件
         _canvas.getActiveObjects().forEach((x) => dispatch(shapeRemoved(x.name!)))
     }
     canvas.renderAll()
   }
 }
 
-// 每当 strokeSizeSelected action 被触发时
-// 我们会在 _canvas 对象中更新该设置
 _listenerMiddleware.startListening({
   actionCreator: strokeSizeSelected,
   effect: (action) => {
@@ -69,7 +90,6 @@ _listenerMiddleware.startListening({
   },
 })
 
-// 同上
 _listenerMiddleware.startListening({
   actionCreator: strokeColorSelected,
   effect: (action) => {
@@ -77,9 +97,6 @@ _listenerMiddleware.startListening({
   },
 })
 
-// 监听形状移除事件
-// 可以从形状面板触发或通过按删除键触发
-// 我们会找到提到的对象并从画布中移除它
 _listenerMiddleware.startListening({
   actionCreator: shapeRemoved,
   effect: (action) => {
@@ -97,26 +114,18 @@ _listenerMiddleware.startListening({
     if (!_canvas) return
     if (!action.payload) return
 
-    // 在工具变化时取消订阅特定工具添加的画布事件
     if (_cleanupMode) _cleanupMode()
 
-    // 工具可能已关闭或未关闭 mouse:up，让我们取消订阅以确保安全
     _canvas.off('mouse:up')
 
-    // 重新订阅因为我们需要它
     _canvas.on('mouse:up', () => {
-      // 这将在绘制或移动事件结束时发生
       const active = _canvas.getActiveObjects()
       if (active.length) {
-        // 分发所有更新的对象以在形状面板上显示变化
-        // 形状面板在画布上的相应位置分别显示每个形状
         listenerApi.dispatch(shapesUpdated(active.map(generateSvgForShape)))
       }
     })
 
-    // 通过工具检测模式
     const applyMode = canvasMode[action.payload]
-    // 应用检测到的模式并保存其清理函数
     _cleanupMode = applyMode(
       _canvas,
       () => listenerApi.getState() as RootState,
@@ -125,7 +134,19 @@ _listenerMiddleware.startListening({
   },
 })
 
-// 工具到应用模式函数的映射
+_listenerMiddleware.startListening({
+  actionCreator: setMenuSidePanelVisible,
+  effect: (action, listenerApi) => {
+    if (action.payload) {
+      const applyMode = canvasMode['menu side panel']
+      applyMode(_canvas, () => listenerApi.getState() as RootState, listenerApi.dispatch as AppDispatch)
+    } else {
+      _cleanupMode()
+    }
+  },
+})
+
+
 const canvasMode: Record<Tool, ApplyCanvasModeFunc<unknown>> = {
   line: applyDrawLineMode,
   move: applyHandMode,
@@ -135,6 +156,7 @@ const canvasMode: Record<Tool, ApplyCanvasModeFunc<unknown>> = {
   text: applyTextMode,
   'in paint': applyInPaintMode,
   expand: applyExpandMode,
+  'menu side panel': applyMenuSidePanelMode,
 }
 
 export default _listenerMiddleware.middleware

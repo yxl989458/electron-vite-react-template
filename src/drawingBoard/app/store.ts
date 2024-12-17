@@ -4,14 +4,16 @@ import canvasMiddleware from './canvasMiddleware'
 import optionsPanelReducer from '../features/optionsPanel/optionsPanelSlice'
 import shapesPanelReducer from '../features/shapesPanel/shapesPanelSlice'
 import controllerPanelReducer from '../features/controllerPanel/controllerPanelSlice'
+import menuSlidePanelReducer from '../features/menuSildeModePanel/menuSildeSlice'
 export const store = configureStore({
   reducer: {
+    menuSidePanel: menuSlidePanelReducer,
     toolsPanel: toolsPanelReducer,
     optionsPanel: optionsPanelReducer,
     shapesPanel: shapesPanelReducer,
     controllerPanel: controllerPanelReducer,
   },
-  middleware: (getDefaultMiddleware) => getDefaultMiddleware().prepend(canvasMiddleware),
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware({serializableCheck: false}).prepend(canvasMiddleware),
 })
 
 export type AppDispatch = typeof store.dispatch

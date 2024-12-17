@@ -1,4 +1,5 @@
 import { CanvasWrapper } from './drawingBoard/features/canvas/CanvasWrapper'
+import MenuPanel from './drawingBoard/features/menuSildeModePanel/menuSildePanel'
 import { OptionsPanel } from './drawingBoard/features/optionsPanel/OptionsPanel'
 import { ShapesPanel } from './drawingBoard/features/shapesPanel/ShapesPanel'
 import { ToolsPanel } from './drawingBoard/features/toolsPanel/ToolsPanel'
