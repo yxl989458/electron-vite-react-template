@@ -6,7 +6,6 @@ import { useSelector } from 'react-redux'
 import { useEffect, useRef, useState } from 'react'
 
 export default function MenuPanel() {
-
   const { isVisible, activeObjectBoundingRect } = useSelector(getMenuSidePanel)
   const menuRef = useRef<HTMLDivElement>(null)
   const [menuPosition, setMenuPosition] = useState({
@@ -41,40 +40,32 @@ export default function MenuPanel() {
       }}
       className="absolute will-change-transform px-2  left-0 top-0 "
       role="menu"
-      aria-label="Object menu"
-    >
+      aria-label="Object menu">
       <MenuList
         sx={{
           display: 'flex',
           flexDirection: 'column',
           gap: 1,
-        }}
-      >
-        {
-          Array.from({ length: 10 }).map((_, index) => (
-            <MenuItem
-          dense
-          sx={{
-            '&.MuiButtonBase-root': {
-              padding: '2px',
-              borderRadius: '4px',
-              '&:hover': {
-                backgroundColor: '#9c27b0',
+        }}>
+        {Array.from({ length: 10 }).map((_, index) => (
+          <MenuItem
+            dense
+            sx={{
+              '&.MuiButtonBase-root': {
+                padding: '2px',
+                borderRadius: '4px',
+                '&:hover': {
+                  backgroundColor: '#9c27b0',
+                },
+                minHeight: 'auto',
               },
-              minHeight: 'auto',
-            },
-
-          }}
-          focusVisibleClassName="bg-transparent"
-          tabIndex={0}
-        >
-          <DeleteIcon  />
-        </MenuItem>
-          ))
-        }
-
+            }}
+            focusVisibleClassName="bg-transparent"
+            tabIndex={0}>
+            <DeleteIcon />
+          </MenuItem>
+        ))}
       </MenuList>
-
     </Paper>
   )
 }

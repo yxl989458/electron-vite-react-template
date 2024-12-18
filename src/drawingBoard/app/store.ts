@@ -13,7 +13,8 @@ export const store = configureStore({
     shapesPanel: shapesPanelReducer,
     controllerPanel: controllerPanelReducer,
   },
-  middleware: (getDefaultMiddleware) => getDefaultMiddleware({serializableCheck: false}).prepend(canvasMiddleware),
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({ serializableCheck: false }).prepend(canvasMiddleware),
 })
 
 export type AppDispatch = typeof store.dispatch

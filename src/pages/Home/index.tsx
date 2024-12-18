@@ -1,26 +1,23 @@
-import { Box, Stack, Typography, Grid } from '@mui/material'
-import { FeatureCard } from '@/components/FeatureCard'
-import { TagNav } from '@/components/TagNav'
+import backgroundRemovalIcon from '@/assets/icon/backgroundRemoval.svg?react'
+import BlenderIcon from '@/assets/icon/Blender.svg?react'
+import enhanceColorIcon from '@/assets/icon/enhanceColor.svg?react'
+import enlargeImageIcon from '@/assets/icon/enlargeImage.svg?react'
+import expandImage from '@/assets/icon/expandImage.svg?react'
 import Imagele from '@/assets/icon/Imagle.svg?react'
-import VideoIcon from '@/assets/icon/video.svg?react'
+import inPainTingIcon from '@/assets/icon/inPainTing.svg?react'
+import KritaIcon from '@/assets/icon/krita.svg?react'
+import MoreHorizIcon from '@/assets/icon/moreHoriz.svg?react'
+import objectReplaceIcon from '@/assets/icon/objectReplace.svg?react'
 import PhotoShopIcon from '@/assets/icon/photoShop.svg?react'
 import SketchupIcon from '@/assets/icon/sketchup.svg?react'
-import KritaIcon from '@/assets/icon/krita.svg?react'
-import BlenderIcon from '@/assets/icon/Blender.svg?react'
-import enlargeImageIcon from '@/assets/icon/enlargeImage.svg?react'
-import enhanceColorIcon from '@/assets/icon/enhanceColor.svg?react'
-import inPainTingIcon from '@/assets/icon/inPainTing.svg?react'
-import expandImage from '@/assets/icon/expandImage.svg?react'
-import objectReplaceIcon from '@/assets/icon/objectReplace.svg?react'
-import backgroundRemovalIcon from '@/assets/icon/backgroundRemoval.svg?react'
-import { IconButton } from '@mui/material'
-import MoreHorizIcon from '@/assets/icon/moreHoriz.svg?react'
-import { Link } from 'react-router-dom'
-import { AIFeatureGrid } from '@/components/AIFeatureGrid'
-import { aiFeatures } from '@/data/aiFeatures'
+import VideoIcon from '@/assets/icon/video.svg?react'
 import { AIAppCard } from '@/components/AIAppCard'
-import { aiApps } from '@/data/aiApps'
+import { FeatureCard } from '@/components/FeatureCard'
+import { TagNav } from '@/components/TagNav'
 import Title from '@/components/Title'
+import { aiApps } from '@/data/aiApps'
+import { Box, Grid, IconButton, Stack, Typography } from '@mui/material'
+import { Link } from 'react-router-dom'
 
 const tags = [
   { label: 'all', value: 'all' },
@@ -43,7 +40,6 @@ const tags = [
 
 const HomePage = () => {
   const handleTagChange = (value: string) => {
-    console.log('Selected tag:', value)
     // 处理标签切换逻辑
   }
 

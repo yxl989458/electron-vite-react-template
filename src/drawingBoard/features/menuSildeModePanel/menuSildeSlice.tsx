@@ -1,8 +1,6 @@
-import { RootState } from "@/drawingBoard/app/store"
-import { createSlice, PayloadAction } from "@reduxjs/toolkit"
-import { fabric } from "fabric"
-
-
+import { RootState } from '@/drawingBoard/app/store'
+import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { fabric } from 'fabric'
 
 export type BoundingRect = ReturnType<fabric.Object['getBoundingRect']>
 
@@ -33,7 +31,6 @@ export const menuSidePanelSlice = createSlice({
     setActiveObjectBoundingRect: (state, action: PayloadAction<BoundingRect | null>) => {
       state.activeObjectBoundingRect = action.payload as any
     },
-
   },
 })
 

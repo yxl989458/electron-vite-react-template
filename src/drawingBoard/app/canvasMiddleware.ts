@@ -1,6 +1,15 @@
 import { createListenerMiddleware } from '@reduxjs/toolkit'
 import { fabric } from 'fabric'
 
+import initControls from '../core/initControls'
+import {
+  setActiveObjectBoundingRect,
+  setMenuSidePanelVisible,
+} from '../features/menuSildeModePanel/menuSildeSlice'
+import { strokeColorSelected, strokeSizeSelected } from '../features/optionsPanel/optionsPanelSlice'
+import { shapeRemoved, shapesUpdated } from '../features/shapesPanel/shapesPanelSlice'
+import { Tool, toolSelected } from '../features/toolsPanel/toolsPanelSlice'
+import { ApplyCanvasModeFunc } from './canvas/canvasMode'
 import { drawLineMode as applyDrawLineMode } from './canvas/drawLineMode'
 import { drawRectMode as applyDrawRectMode } from './canvas/drawRectMode'
 import { expandMode as applyExpandMode } from './canvas/expandMode'
@@ -8,70 +17,53 @@ import { freeDrawMode as applyFreeDrawMode } from './canvas/freeDrawMode'
 import generateSvgForShape from './canvas/generateSvgForShape'
 import { handMode as applyHandMode } from './canvas/handMode'
 import { darwinPaint as applyInPaintMode } from './canvas/inPaintMode'
+import { menuSidePanelMode as applyMenuSidePanelMode } from './canvas/menuSildeMode'
 import { moveCanvasMode as applyMoveCanvasMode } from './canvas/moveCanvasMode'
 import { textMode as applyTextMode } from './canvas/textboxMode'
 import { AppDispatch, RootState } from './store'
-
-import initControls from '../core/initControls'
-import { setActiveObjectBoundingRect, setMenuSidePanelVisible } from '../features/menuSildeModePanel/menuSildeSlice'
-import { strokeColorSelected, strokeSizeSelected } from '../features/optionsPanel/optionsPanelSlice'
-import { shapeRemoved, shapesUpdated } from '../features/shapesPanel/shapesPanelSlice'
-import { Tool, toolSelected } from '../features/toolsPanel/toolsPanelSlice'
-import { ApplyCanvasModeFunc } from './canvas/canvasMode'
-import { menuSidePanelMode as applyMenuSidePanelMode } from './canvas/menuSildeMode'
 
 // 创建中间件
 const _listenerMiddleware = createListenerMiddleware()
 
 // 设置变量
-let _cleanupMode = () => { }
+let _cleanupMode = () => {}
 export let _canvas: fabric.Canvas
 
 export const initializeCanvasEffect = (canvas: fabric.Canvas, dispatch: AppDispatch) => {
   _canvas = canvas
   initControls(_canvas)
 
-
   canvas.on('selection:created', (options) => {
-    console.log('selection:created', options);
     if (options.selected && !options.selected.length) return
     dispatch(setMenuSidePanelVisible(true))
     dispatch(setActiveObjectBoundingRect(options.selected![0].getBoundingRect()))
- 
   })
   canvas.on('selection:updated', (options) => {
-    console.log('selection:updated', options);
     dispatch(setActiveObjectBoundingRect(options.selected![0].getBoundingRect()))
   })
 
   canvas.on('selection:cleared', (options) => {
-    console.log('selection:cleared', options);
     dispatch(setMenuSidePanelVisible(false))
   })
 
-  canvas.on('mouse:wheel', opt => {
+  canvas.on('mouse:wheel', (opt) => {
     opt.e.preventDefault()
     if (!opt.e.altKey) return
     const delta = opt.e.deltaY
-    let zoom = canvas.getZoom() 
+    let zoom = canvas.getZoom()
     zoom *= 0.999 ** delta
-    if (zoom > 20) zoom = 20 
-    if (zoom < 0.01) zoom = 0.01 
+    if (zoom > 20) zoom = 20
+    if (zoom < 0.01) zoom = 0.01
 
     canvas.zoomToPoint(
-      { // 关键点
+      {
+        // 关键点
         x: opt.e.offsetX,
-        y: opt.e.offsetY
+        y: opt.e.offsetY,
       },
-      zoom 
+      zoom,
     )
   })
-
-
-
-
-
-
 
   _canvas.freeDrawingBrush.width = 1
   document.onkeydown = function (e) {
@@ -139,13 +131,16 @@ _listenerMiddleware.startListening({
   effect: (action, listenerApi) => {
     if (action.payload) {
       const applyMode = canvasMode['menu side panel']
-      applyMode(_canvas, () => listenerApi.getState() as RootState, listenerApi.dispatch as AppDispatch)
+      applyMode(
+        _canvas,
+        () => listenerApi.getState() as RootState,
+        listenerApi.dispatch as AppDispatch,
+      )
     } else {
       _cleanupMode()
     }
   },
 })
-
 
 const canvasMode: Record<Tool, ApplyCanvasModeFunc<unknown>> = {
   line: applyDrawLineMode,

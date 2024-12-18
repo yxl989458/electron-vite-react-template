@@ -21,7 +21,7 @@ export const transformUtils = {
 
     return {
       x: point.x / zoom - vpt[4] / zoom,
-      y: point.y / zoom - vpt[5] / zoom
+      y: point.y / zoom - vpt[5] / zoom,
     }
   },
 
@@ -32,7 +32,7 @@ export const transformUtils = {
     const zoom = canvas.getZoom()
     return {
       width: size.width / zoom,
-      height: size.height / zoom
+      height: size.height / zoom,
     }
   },
 
@@ -53,7 +53,11 @@ export const transformUtils = {
   /**
    * 创建考虑画布变换的矩形配置
    */
-  createRectConfig(canvas: fabric.Canvas, bounds: TransformPoint & TransformSize, options: Partial<fabric.IRectOptions> = {}) {
+  createRectConfig(
+    canvas: fabric.Canvas,
+    bounds: TransformPoint & TransformSize,
+    options: Partial<fabric.IRectOptions> = {},
+  ) {
     const transformedPoint = this.toCanvasPoint(canvas, bounds)
     const transformedSize = this.toCanvasSize(canvas, bounds)
     const zoom = canvas.getZoom()
@@ -65,7 +69,7 @@ export const transformUtils = {
       height: transformedSize.height,
       strokeWidth: (options.strokeWidth || 1) / zoom,
       cornerSize: (options.cornerSize || 10) / zoom,
-      ...options
+      ...options,
     }
   },
 
@@ -84,18 +88,23 @@ export const transformUtils = {
     const zoom = canvas.getZoom()
     const vpt = canvas.viewportTransform
     if (!vpt) return { zoom, translateX: 0, translateY: 0 }
-    
+
     return {
       zoom,
       translateX: vpt[4],
-      translateY: vpt[5]
+      translateY: vpt[5],
     }
   },
 
   /**
    * 创建考虑画布变换的扩展框配置
    */
-  createExpandBoxConfig(canvas: fabric.Canvas, bounds: { left: number; top: number; width: number; height: number }, padding: number, options: Partial<fabric.IRectOptions> = {}) {
+  createExpandBoxConfig(
+    canvas: fabric.Canvas,
+    bounds: { left: number; top: number; width: number; height: number },
+    padding: number,
+    options: Partial<fabric.IRectOptions> = {},
+  ) {
     const { zoom } = this.getCanvasTransform(canvas)
     // 不对padding进行缩放，保持固定的视觉大小
     const scaledPadding = padding
@@ -107,7 +116,7 @@ export const transformUtils = {
       height: bounds.height + scaledPadding * 2,
       strokeWidth: options.strokeWidth || 2,
       cornerSize: options.cornerSize || 10,
-      ...options
+      ...options,
     }
-  }
-} 
+  },
+}

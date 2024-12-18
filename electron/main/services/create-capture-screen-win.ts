@@ -6,8 +6,6 @@ export class CreateCaptureScreenWindow {
   private captureWin: BrowserWindow[]
 
   constructor(event: Electron.IpcMainEvent) {
-    console.log(event, 'event')
-
     this.captureWin = this.createCaptureWindow(event)
   }
   createCaptureWindow(event: Electron.IpcMainEvent) {

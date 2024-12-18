@@ -69,8 +69,6 @@ export default function Capture() {
   }, [])
 
   const handleConfirm = useCallback(() => {
-    console.log('capture-screen-result')
-
     window.ipcRenderer.send('capture-screen-result', selectionArea)
   }, [selectionArea])
 
@@ -84,13 +82,10 @@ export default function Capture() {
   useEventListener('keydown', handleKeyDown)
 
   window.ipcRenderer.on('capture-screen-complete', (event, data) => {
-    console.log('capture-screen-complete', data)
     // 粘贴到剪贴板
   })
   //TODO: 获取截图窗口id 目前没有用
-  window.ipcRenderer.on('on-capture-screen-id', (event, id) => {
-    console.log(id)
-  })
+  window.ipcRenderer.on('on-capture-screen-id', (event, id) => {})
 
   return (
     <div ref={overlayRef} className="fixed inset-0">

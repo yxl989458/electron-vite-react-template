@@ -161,8 +161,6 @@ export const darwinPaint: ApplyCanvasModeFunc<undefined> = (canvas, getState, di
     if (!isDrawing) return
     isDrawing = false
     canvas.setActiveObject(maskGroup)
-    console.log('mouseUpHandler')
-
     maskGroup.selectable = true
     maskGroup.evented = true
     if (points.length > 1) {

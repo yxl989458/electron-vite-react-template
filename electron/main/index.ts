@@ -37,7 +37,6 @@ const store = new Store<StoreType>({
 })
 export const preload = path.join(__dirname, '../preload/index.mjs')
 export const indexHtml = path.join(RENDERER_DIST, 'index.html')
-console.log(indexHtml)
 
 let windowManager: WindowManager
 let trayManager: TrayManager
@@ -103,8 +102,6 @@ app.on('activate', () => {
 
 // New window example arg: new windows url
 ipcMain.handle('open-win', (_, arg) => {
-  console.log('open-win', arg)
-
   const childWindow = new BrowserWindow({
     webPreferences: {
       preload,

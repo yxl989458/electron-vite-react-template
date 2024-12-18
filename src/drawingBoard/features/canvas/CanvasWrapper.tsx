@@ -1,6 +1,6 @@
 import { fabric } from 'fabric'
 import { useEffect, useRef } from 'react'
-import { _canvas, initializeCanvasEffect } from '../../app/canvasMiddleware'
+import { initializeCanvasEffect } from '../../app/canvasMiddleware'
 import { useAppDispatch } from '../../app/hooks'
 import { ControllerPanel } from '../controllerPanel/controllerPanel'
 import MenuPanel from '../menuSildeModePanel/menuSildePanel'
@@ -12,14 +12,12 @@ export const CanvasWrapper = () => {
   useEffect(() => {
     const canvas = new fabric.Canvas(canvasEl.current, { selection: false, stopContextMenu: true })
 
-    //The only direct interaction. Required to pass canvas object to the middleware
     initializeCanvasEffect(canvas, dispatch)
 
     return () => {
       canvas.dispose()
-      console.log('Canvas Disposed')
     }
-  }, []) //if this effects will get called again, you'll loose all objects present on canvas
+  }, [])
 
   return (
     <div ref={containerEl} className="border w-full relative">

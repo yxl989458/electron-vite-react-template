@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { fabric } from 'fabric';
+import { fabric } from 'fabric'
 
 // 竖线
 const verticalImg = 'https://ossprod.jrdaimao.com/file/1691055918106919.svg'
@@ -21,7 +21,7 @@ const topBgImg = 'https://ossprod.jrdaimao.com/file/1691978616647204.svg'
  * 实际场景: 在进行某个对象缩放的时候，由于fabric.js默认精度使用的是toFixed(2)。
  * 此处为了缩放的精度更准确一些，因此将NUM_FRACTION_DIGITS默认值改为4，即toFixed(4).
  */
-fabric.Object.NUM_FRACTION_DIGITS = 4;
+fabric.Object.NUM_FRACTION_DIGITS = 4
 
 // 隐藏八个角缩放按钮
 export const setBaseControlVisible = (object, visible) => {
@@ -34,7 +34,7 @@ export const setBaseControlVisible = (object, visible) => {
     tl: visible,
     tr: visible,
     bl: visible,
-    br: visible
+    br: visible,
   })
 }
 // 隐藏自定义高级操作按钮
@@ -45,7 +45,7 @@ export const setHighControlVisible = (object, visible) => {
     delete: visible,
     clip: visible,
     rotate: visible,
-    topBg: visible
+    topBg: visible,
   })
 }
 
@@ -56,32 +56,32 @@ function drawImg(
   img: HTMLImageElement,
   wSize: number,
   hSize: number,
-  angle: number | undefined
+  angle: number | undefined,
 ) {
-  if (angle === undefined) return;
-  ctx.save();
-  ctx.translate(left, top);
-  ctx.rotate(fabric.util.degreesToRadians(angle));
-  ctx.drawImage(img, -wSize / 2, -hSize / 2, wSize, hSize);
-  ctx.restore();
+  if (angle === undefined) return
+  ctx.save()
+  ctx.translate(left, top)
+  ctx.rotate(fabric.util.degreesToRadians(angle))
+  ctx.drawImage(img, -wSize / 2, -hSize / 2, wSize, hSize)
+  ctx.restore()
 }
 
 // 中间横杠
 function intervalControl() {
-  const verticalImgIcon = document.createElement('img');
-  verticalImgIcon.src = verticalImg;
+  const verticalImgIcon = document.createElement('img')
+  verticalImgIcon.src = verticalImg
 
-  const horizontalImgIcon = document.createElement('img');
-  horizontalImgIcon.src = horizontalImg;
+  const horizontalImgIcon = document.createElement('img')
+  horizontalImgIcon.src = horizontalImg
 
   function renderIcon(
     ctx: CanvasRenderingContext2D,
     left: number,
     top: number,
     styleOverride: any,
-    fabricObject: fabric.Object
+    fabricObject: fabric.Object,
   ) {
-    drawImg(ctx, left, top, verticalImgIcon, 20, 25, fabricObject.angle);
+    drawImg(ctx, left, top, verticalImgIcon, 20, 25, fabricObject.angle)
   }
 
   function renderIconHoz(
@@ -89,9 +89,9 @@ function intervalControl() {
     left: number,
     top: number,
     styleOverride: any,
-    fabricObject: fabric.Object
+    fabricObject: fabric.Object,
   ) {
-    drawImg(ctx, left, top, horizontalImgIcon, 25, 20, fabricObject.angle);
+    drawImg(ctx, left, top, horizontalImgIcon, 25, 20, fabricObject.angle)
   }
 
   // 中间横杠
@@ -103,7 +103,7 @@ function intervalControl() {
     actionHandler: fabric.controlsUtils.scalingXOrSkewingY,
     getActionName: fabric.controlsUtils.scaleOrSkewActionName,
     render: renderIcon,
-  });
+  })
 
   fabric.Object.prototype.controls.mr = new fabric.Control({
     x: 0.5,
@@ -113,7 +113,7 @@ function intervalControl() {
     actionHandler: fabric.controlsUtils.scalingXOrSkewingY,
     getActionName: fabric.controlsUtils.scaleOrSkewActionName,
     render: renderIcon,
-  });
+  })
 
   fabric.Object.prototype.controls.mb = new fabric.Control({
     x: 0,
@@ -123,7 +123,7 @@ function intervalControl() {
     actionHandler: fabric.controlsUtils.scalingYOrSkewingX,
     getActionName: fabric.controlsUtils.scaleOrSkewActionName,
     render: renderIconHoz,
-  });
+  })
 
   fabric.Object.prototype.controls.mt = new fabric.Control({
     x: 0,
@@ -133,22 +133,22 @@ function intervalControl() {
     actionHandler: fabric.controlsUtils.scalingYOrSkewingX,
     getActionName: fabric.controlsUtils.scaleOrSkewActionName,
     render: renderIconHoz,
-  });
+  })
 }
 
 // 顶点
 function peakControl() {
-  const img = document.createElement('img');
-  img.src = edgeImg;
+  const img = document.createElement('img')
+  img.src = edgeImg
 
   function renderIconEdge(
     ctx: CanvasRenderingContext2D,
     left: number,
     top: number,
     styleOverride: any,
-    fabricObject: fabric.Object
+    fabricObject: fabric.Object,
   ) {
-    drawImg(ctx, left, top, img, 25, 25, fabricObject.angle);
+    drawImg(ctx, left, top, img, 25, 25, fabricObject.angle)
   }
 
   // 四角图标
@@ -158,43 +158,43 @@ function peakControl() {
     cursorStyleHandler: fabric.controlsUtils.scaleCursorStyleHandler,
     actionHandler: fabric.controlsUtils.scalingEqually,
     render: renderIconEdge,
-  });
+  })
   fabric.Object.prototype.controls.bl = new fabric.Control({
     x: -0.5,
     y: 0.5,
     cursorStyleHandler: fabric.controlsUtils.scaleCursorStyleHandler,
     actionHandler: fabric.controlsUtils.scalingEqually,
     render: renderIconEdge,
-  });
+  })
   fabric.Object.prototype.controls.tr = new fabric.Control({
     x: 0.5,
     y: -0.5,
     cursorStyleHandler: fabric.controlsUtils.scaleCursorStyleHandler,
     actionHandler: fabric.controlsUtils.scalingEqually,
     render: renderIconEdge,
-  });
+  })
   fabric.Object.prototype.controls.br = new fabric.Control({
     x: 0.5,
     y: 0.5,
     cursorStyleHandler: fabric.controlsUtils.scaleCursorStyleHandler,
     actionHandler: fabric.controlsUtils.scalingEqually,
     render: renderIconEdge,
-  });
+  })
 }
 
 // 旋转
 function rotationControl() {
-  const img = document.createElement('img');
-  img.src = rotateImg;
+  const img = document.createElement('img')
+  img.src = rotateImg
 
   function renderIconRotate(
     ctx: CanvasRenderingContext2D,
     left: number,
     top: number,
     styleOverride: any,
-    fabricObject: fabric.Object
+    fabricObject: fabric.Object,
   ) {
-    drawImg(ctx, left, top, img, 60, 60, fabricObject.angle);
+    drawImg(ctx, left, top, img, 60, 60, fabricObject.angle)
   }
 
   // 旋转图标
@@ -206,8 +206,7 @@ function rotationControl() {
     actionName: 'rotate',
     cursorStyle: 'pointer',
     render: renderIconRotate,
-  });
-
+  })
 }
 
 // 自定义操作
@@ -222,9 +221,9 @@ function initMainControl() {
   clipImageEl.src = clipImg
 
   function cloneObject(eventData, transform) {
-    const target = transform.target;
+    const target = transform.target
     if (!target) return
-    const canvas = target.canvas;
+    const canvas = target.canvas
     events.emit(Types.SHOW_LOADING, true)
     target.clone(function (cloned) {
       cloned.set({
@@ -237,32 +236,32 @@ function initMainControl() {
         rectDiffLeft: target.rectDiffLeft,
         rectDiffTop: target.rectDiffTop,
         prevWidth: target.prevWidth,
-        prevHeight: target.prevHeight
+        prevHeight: target.prevHeight,
       })
       cloned.setCoords()
       canvas.add(cloned)
       canvas.setActiveObject(cloned)
       canvas.renderAll()
       events.emit(Types.SHOW_LOADING, false)
-    });
+    })
   }
 
   function deleteObject(eventData, transform) {
-    const target = transform.target;
+    const target = transform.target
     if (!target) return
-    const canvas = target.canvas;
-    const clipRect = canvas.getObjects().find(item => item.id === 'currentClipRect')
+    const canvas = target.canvas
+    const clipRect = canvas.getObjects().find((item) => item.id === 'currentClipRect')
     if (clipRect) {
       canvas.remove(clipRect)
     }
-    canvas.remove(target);
-    canvas.requestRenderAll();
+    canvas.remove(target)
+    canvas.requestRenderAll()
   }
 
   function clipObject(eventData, transform) {
-    const image = transform.target;
+    const image = transform.target
     if (image.type !== 'image') return
-    const canvas = image.canvas;
+    const canvas = image.canvas
     const rectLeft = image.left // 矩形的位置X
     const rectTop = image.top // 矩形的位置Y
     const sourceSrc = image.sourceSrc // 原图的src，做回显的时候需要用
@@ -270,15 +269,19 @@ function initMainControl() {
     const rawScaleY = image.rawScaleY || image.scaleY // 原图的缩放比例Y
     const rectDiffLeft = image.rectDiffLeft // 图片距离rect裁剪框的偏差X
     const rectDiffTop = image.rectDiffTop // 图片距离rect裁剪框的偏差Y
-    const index = canvas.getObjects().findIndex(item => item.id === image.id); // 获取到裁剪之前的层级
+    const index = canvas.getObjects().findIndex((item) => item.id === image.id) // 获取到裁剪之前的层级
     const sourceWidth = image.getScaledWidth() // 获取图片的宽，这就是裁剪框的宽
     const sourceHeight = image.getScaledHeight() // 获取图片的高，这就是裁剪框的高
-    image.clone((o) => image.set({cloneObject: o})) // 克隆一个object，取消裁剪的时候会用到
+    image.clone((o) => image.set({ cloneObject: o })) // 克隆一个object，取消裁剪的时候会用到
     if (sourceSrc) {
       // 如果有sourceSrc代表之前裁剪过，这里那原图的src进行返显
-      image.setSrc(sourceSrc, () => {
-        canvas.renderAll()
-      }, {crossOrigin: 'anonymous'})
+      image.setSrc(
+        sourceSrc,
+        () => {
+          canvas.renderAll()
+        },
+        { crossOrigin: 'anonymous' },
+      )
       /**
        * 设置原图的位置和原图的缩放比
        * 缩放比：这个是在外面操作的时候计算好的，直接赋值就行
@@ -288,8 +291,8 @@ function initMainControl() {
         id: 'clipRawImage',
         scaleX: rawScaleX,
         scaleY: rawScaleY,
-        left: !isUndef(rectDiffLeft) ? image.left - (rectDiffLeft * image.scaleX) : image.left,
-        top: !isUndef(rectDiffTop) ? image.top - (rectDiffTop * image.scaleY) : image.top,
+        left: !isUndef(rectDiffLeft) ? image.left - rectDiffLeft * image.scaleX : image.left,
+        top: !isUndef(rectDiffTop) ? image.top - rectDiffTop * image.scaleY : image.top,
       })
     }
     image.bringToFront() // 将这个图片的层级移动到顶层
@@ -298,58 +301,58 @@ function initMainControl() {
     const selectionRect = new fabric.Rect({
       left: rectLeft,
       top: rectTop,
-      fill: "rgba(0,0,0,0.3)",
-      originX: "left",
-      originY: "top",
-      stroke: "black",
+      fill: 'rgba(0,0,0,0.3)',
+      originX: 'left',
+      originY: 'top',
+      stroke: 'black',
       opacity: 1,
       width: sourceWidth,
       height: sourceHeight,
       hasRotatingPoint: false,
       transparentCorners: false,
-      cornerColor: "white",
-      cornerStrokeColor: "black",
-      borderColor: "black",
+      cornerColor: 'white',
+      cornerStrokeColor: 'black',
+      borderColor: 'black',
       cornerSize: 12,
       padding: 0,
-      cornerStyle: "circle",
+      cornerStyle: 'circle',
       borderDashArray: [5, 5],
       borderScaleFactor: 1.3,
       id: 'currentClipRect',
       lockMovementX: true,
       lockMovementY: true,
-      hoverCursor: 'default'
-    });
+      hoverCursor: 'default',
+    })
     // 存一下原图的src，因为后面裁剪后生成的图片就是base64了
-    image.set({sourceSrc: image.sourceSrc || image._element.src})
+    image.set({ sourceSrc: image.sourceSrc || image._element.src })
 
     let selectionRectDown = false
     let imageDown = false
     // 监听鼠标按下事件
-    selectionRect.on('mousedown', ({}) => selectionRectDown = true)
+    selectionRect.on('mousedown', ({}) => (selectionRectDown = true))
     // 监听鼠标缩放事件
-    selectionRect.on('scaling', () => selectionRectDown = false)
+    selectionRect.on('scaling', () => (selectionRectDown = false))
     // 控制rect的拖动区域
-    selectionRect.on('mousemove', ({e}) => {
+    selectionRect.on('mousemove', ({ e }) => {
       if (!selectionRectDown) return
       setBaseControlVisible(selectionRect, false)
       image.set({
         left: image.left + e.movementX,
-        top: image.top + e.movementY
-      });
+        top: image.top + e.movementY,
+      })
       if (image.left > selectionRect.left) {
-        image.set({left: selectionRect.left})
+        image.set({ left: selectionRect.left })
       }
       const rectWidth = selectionRect.getScaledWidth()
       if (image.left + image.getScaledWidth() <= selectionRect.left + rectWidth) {
-        image.set({left: selectionRect.left + rectWidth - image.getScaledWidth()})
+        image.set({ left: selectionRect.left + rectWidth - image.getScaledWidth() })
       }
       if (image.top > selectionRect.top) {
-        image.set({top: selectionRect.top})
+        image.set({ top: selectionRect.top })
       }
       const rectHeight = selectionRect.getScaledHeight()
       if (image.top + image.getScaledHeight() <= selectionRect.top + rectHeight) {
-        image.set({top: selectionRect.top + rectHeight - image.getScaledHeight()})
+        image.set({ top: selectionRect.top + rectHeight - image.getScaledHeight() })
       }
       canvas.renderAll()
     })
@@ -363,47 +366,47 @@ function initMainControl() {
     selectionRect.on('scaling', (e) => {
       const rect = e.transform.target
       if (rect.left < image.left) {
-        rect.set({left: image.left})
+        rect.set({ left: image.left })
       }
       if (rect.top < image.top) {
-        rect.set({top: image.top})
+        rect.set({ top: image.top })
       }
       if (rect.left + rect.getScaledWidth() > image.left + image.getScaledWidth()) {
-        rect.set({left: image.left + image.getScaledWidth() - rect.getScaledWidth()})
+        rect.set({ left: image.left + image.getScaledWidth() - rect.getScaledWidth() })
       }
       if (rect.top + rect.getScaledHeight() > image.top + image.getScaledHeight()) {
-        rect.set({top: image.top + image.getScaledHeight() - rect.getScaledHeight()})
+        rect.set({ top: image.top + image.getScaledHeight() - rect.getScaledHeight() })
       }
       if (image.getScaledWidth() / rect.getScaledWidth() < 1) {
         rect.set({
-          scaleX: image.getScaledWidth() / selectionRect.getScaledWidth() * rect.get('scaleX'),
+          scaleX: (image.getScaledWidth() / selectionRect.getScaledWidth()) * rect.get('scaleX'),
           left: image.left,
         })
       }
       if (image.getScaledHeight() / rect.getScaledHeight() < 1) {
         rect.set({
-          scaleY: image.getScaledHeight() / selectionRect.getScaledHeight() * rect.get('scaleY'),
-          top: image.top
+          scaleY: (image.getScaledHeight() / selectionRect.getScaledHeight()) * rect.get('scaleY'),
+          top: image.top,
         })
       }
       canvas.renderAll()
-    });
+    })
     // 控制图片的拖动区域
     image.on('moving', (e) => {
       const image = e.transform.target
       if (image.left > selectionRect.left) {
-        image.set({left: selectionRect.left})
+        image.set({ left: selectionRect.left })
       }
       if (image.top > selectionRect.top) {
-        image.set({top: selectionRect.top})
+        image.set({ top: selectionRect.top })
       }
       const rectWidth = selectionRect.getScaledWidth()
       if (image.left < selectionRect.left + rectWidth - image.getScaledWidth()) {
-        image.set({left: selectionRect.left + rectWidth - image.getScaledWidth()})
+        image.set({ left: selectionRect.left + rectWidth - image.getScaledWidth() })
       }
       const rectHeight = selectionRect.getScaledHeight()
       if (image.top < selectionRect.top + rectHeight - image.getScaledHeight()) {
-        image.set({top: selectionRect.top + rectHeight - image.getScaledHeight()})
+        image.set({ top: selectionRect.top + rectHeight - image.getScaledHeight() })
       }
       canvas.renderAll()
     })
@@ -411,20 +414,24 @@ function initMainControl() {
     image.on('scaling', (e) => {
       const image = e.transform.target
       if (image.left > selectionRect.left) {
-        image.set({left: selectionRect.left})
+        image.set({ left: selectionRect.left })
       }
       if (image.top > selectionRect.top) {
-        image.set({top: selectionRect.top})
+        image.set({ top: selectionRect.top })
       }
       if (selectionRect.getScaledWidth() / image.getScaledWidth() > 1) {
-        image.set({scaleX: selectionRect.getScaledWidth() * image.get('scaleX') / image.getScaledWidth()})
+        image.set({
+          scaleX: (selectionRect.getScaledWidth() * image.get('scaleX')) / image.getScaledWidth(),
+        })
       }
       if (selectionRect.getScaledHeight() / image.getScaledHeight() > 1) {
-        image.set({scaleY: selectionRect.getScaledHeight() * image.get('scaleY') / image.getScaledHeight()})
+        image.set({
+          scaleY: (selectionRect.getScaledHeight() * image.get('scaleY')) / image.getScaledHeight(),
+        })
       }
       canvas.renderAll()
-    });
-    image.on('mousedown', () => imageDown = true)
+    })
+    image.on('mousedown', () => (imageDown = true))
     image.on('mousemove', () => {
       if (imageDown) {
         setBaseControlVisible(image, false)
@@ -438,9 +445,9 @@ function initMainControl() {
     })
     // 矩形不要操作按钮，将它们隐藏
     setHighControlVisible(selectionRect, false)
-    canvas.add(selectionRect);
+    canvas.add(selectionRect)
     canvas.setActiveObject(selectionRect)
-    canvas.renderAll();
+    canvas.renderAll()
     // 告诉HeaderControl我要开始裁剪了
     events.emit(Types.CLIP_IMAGE, {
       visible: true, // 展示裁剪确定、取消按钮
@@ -539,13 +546,13 @@ function initMainControl() {
 
 function initControls(canvas: fabric.Canvas) {
   // 顶点图标
-  peakControl();
+  peakControl()
   // 中间横杠图标
-  intervalControl();
+  intervalControl()
   // 旋转图标
-  rotationControl();
+  rotationControl()
   // 初始化自定义操作
-  initMainControl();
+  initMainControl()
 
   // 选中样式
   fabric.Object.prototype.set({
@@ -556,9 +563,9 @@ function initControls(canvas: fabric.Canvas) {
     cornerStyle: 'circle',
     cornerStrokeColor: '#0E98FC',
     borderOpacityWhenMoving: 1,
-  });
+  })
   // textbox保持一致
   // fabric.Textbox.prototype.controls = fabric.Object.prototype.controls;
 }
 
-export default initControls;
+export default initControls
