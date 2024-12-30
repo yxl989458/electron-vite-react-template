@@ -1,9 +1,8 @@
+import { Delete as DeleteIcon } from '@mui/icons-material'
 import { MenuItem, MenuList, Paper } from '@mui/material'
-import ContentCopyIcon from '@mui/icons-material/ContentCopy'
-import { Delete as DeleteIcon, TextFields as TextFieldsIcon } from '@mui/icons-material'
-import { getMenuSidePanel } from './menuSildeSlice'
-import { useSelector } from 'react-redux'
 import { useEffect, useRef, useState } from 'react'
+import { useSelector } from 'react-redux'
+import { getMenuSidePanel } from './menuSildeSlice'
 
 export default function MenuPanel() {
   const { isVisible, activeObjectBoundingRect } = useSelector(getMenuSidePanel)

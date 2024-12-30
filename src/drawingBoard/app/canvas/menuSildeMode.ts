@@ -1,6 +1,6 @@
-import { setActiveObjectBoundingRect } from '@/drawingBoard/features/menuSildeModePanel/menuSildeSlice'
-import { ApplyCanvasModeFunc } from './canvasMode'
+import { setActiveObjectBoundingRect } from '@/drawingBoard/features/menuSideModePanel/menuSildeSlice'
 import { fabric } from 'fabric'
+import { ApplyCanvasModeFunc } from './canvasMode'
 
 export const menuSidePanelMode: ApplyCanvasModeFunc<undefined> = (canvas, getState, dispatch) => {
   function setMenuSidePanelPositionHandler(event: fabric.IEvent) {

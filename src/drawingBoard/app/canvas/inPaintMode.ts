@@ -1,4 +1,5 @@
 import { fabric } from 'fabric'
+import { setPath } from '../inPaintSlice'
 import { ApplyCanvasModeFunc } from './canvasMode'
 
 export const darwinPaint: ApplyCanvasModeFunc<undefined> = (canvas, getState, dispatch) => {
@@ -6,18 +7,22 @@ export const darwinPaint: ApplyCanvasModeFunc<undefined> = (canvas, getState, di
   if (!activeObject || (activeObject.type !== 'image' && activeObject.type !== 'group')) {
     return () => {}
   }
-
   const drawImgInLine = activeObject as fabric.Image
 
   let maskGroup = new fabric.Group([drawImgInLine], {
     left: drawImgInLine.left,
     top: drawImgInLine.top,
-    selectable: false, // 禁止选择
-    evented: false, // 禁止事件响应
+    selectable: true,
+    evented: true,
+    hasControls: true,
+    hasBorders: true,
+    lockMovementX: true,
+    lockMovementY: true,
   })
   canvas.remove(drawImgInLine)
   canvas.add(maskGroup)
   canvas.setActiveObject(maskGroup)
+  canvas.requestRenderAll()
 
   // Disable selection and events for the group
 
@@ -76,65 +81,108 @@ export const darwinPaint: ApplyCanvasModeFunc<undefined> = (canvas, getState, di
   let points: fabric.Point[] = []
 
   // 添加创建路径的辅助函数
-  const createPath = (points: fabric.Point[]) => {
+  function createPath(points: fabric.Point[]) {
     const { strokeColor, strokeSize } = getState().optionsPanel
-    return new fabric.Path(points.map((p, i) => `${i === 0 ? 'M' : 'L'} ${p.x} ${p.y}`).join(' '), {
+
+    // 生成平滑的路径命令
+    const path = points.reduce((acc, point, i, points) => {
+      if (i === 0) {
+        // 移动到第一个点
+        return `M ${point.x} ${point.y}`
+      }
+      if (i < points.length - 2) {
+        // 计算控制点
+        const xc = (point.x + points[i + 1].x) / 2
+        const yc = (point.y + points[i + 1].y) / 2
+        // 使用二次贝塞尔曲线
+        return `${acc} Q ${point.x} ${point.y}, ${xc} ${yc}`
+      }
+      // 最后一个点使用线性路径
+      return `${acc} L ${point.x} ${point.y}`
+    }, '')
+
+    dispatch(setPath(path))
+    return new fabric.Path(path, {
       stroke: strokeColor,
       strokeWidth: strokeSize,
-      opacity: 0.5,
+      opacity: 1,
       fill: '',
       selectable: false,
       evented: false,
+      strokeLineCap: 'round',
+      strokeLineJoin: 'round',
     })
-  }
-
-  // 添加清除临时路径的辅助函数
-  const clearTemporaryPath = () => {
-    const objects = canvas.getObjects()
-    const lastObject = objects[objects.length - 1]
-    if (lastObject && lastObject !== maskGroup) {
-      canvas.remove(lastObject)
-    }
   }
 
   // 添加创建 SVG 光标的函数
   const createSvgCursor = (size: number, color: string) => {
     const svg = `
-      <svg xmlns="http://www.w3.org/2000/svg" height="${size}" width="${size}">
+      <svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" viewBox="0 0 ${size} ${size}">
         <circle cx="${size / 2}" cy="${size / 2}" r="${size / 2}" fill="${color}"/>
       </svg>
-    `
-    const encodedSvg = encodeURIComponent(svg)
-    return `url("data:image/svg+xml;utf8,${encodedSvg}") ${size / 2} ${size / 2}, crosshair`
+    `.trim()
+    const encoded = window.btoa(svg)
+    return `url(data:image/svg+xml;base64,${encoded}) ${size / 2} ${size / 2}, crosshair`
   }
+
+  // 添加变量跟踪当前正在绘制的路径
+  let currentPath: fabric.Path | null = null
 
   const mouseMoveHandler = (e: fabric.IEvent) => {
     const pointer = getActualPointer(e)
     if (!pointer) return
 
+    if (!canvas.getActiveObject()) {
+      canvas.setActiveObject(maskGroup)
+    }
+
     if (isPointInImage(pointer)) {
-      maskGroup.selectable = false
-      maskGroup.evented = false
       const { strokeColor, strokeSize } = getState().optionsPanel
       const cursorColor = strokeColor.startsWith('rgba')
         ? strokeColor
-        : strokeColor.replace('rgb', 'rgba').replace(')', ', 0.7)')
-      canvas.defaultCursor = createSvgCursor(strokeSize, cursorColor)
+        : strokeColor.replace('rgb', 'rgba').replace(')', ', 0.5)')
+
+      const cursor = createSvgCursor(strokeSize, cursorColor)
+      canvas.defaultCursor = cursor
+      canvas.setCursor(cursor)
+      canvas.requestRenderAll()
     } else {
       canvas.defaultCursor = 'default'
-      maskGroup.selectable = true
-      maskGroup.evented = true
     }
 
     if (!isDrawing) return
-    canvas.discardActiveObject()
+
     const point = constrainPoint(pointer)
+
+    // 如果与上一个点距离太远，插入中间点
+    if (points.length > 0) {
+      const lastPoint = points[points.length - 1]
+      const distance = Math.sqrt(
+        Math.pow(point.x - lastPoint.x, 2) + Math.pow(point.y - lastPoint.y, 2),
+      )
+
+      if (distance > 2) {
+        // 如果点之间距离大于2像素
+        const steps = Math.floor(distance / 2)
+        for (let i = 1; i < steps; i++) {
+          const ratio = i / steps
+          const interpolatedPoint = new fabric.Point(
+            lastPoint.x + (point.x - lastPoint.x) * ratio,
+            lastPoint.y + (point.y - lastPoint.y) * ratio,
+          )
+          points.push(interpolatedPoint)
+        }
+      }
+    }
+
     points.push(point)
 
     if (points.length > 1) {
-      clearTemporaryPath()
-      const path = createPath(points)
-      canvas.add(path)
+      if (currentPath) {
+        maskGroup.remove(currentPath)
+      }
+      currentPath = createPath(points)
+      maskGroup.addWithUpdate(currentPath)
       canvas.requestRenderAll()
     }
   }
@@ -143,41 +191,50 @@ export const darwinPaint: ApplyCanvasModeFunc<undefined> = (canvas, getState, di
     const pointer = getActualPointer(e)
     if (!pointer) return
 
+    canvas.setActiveObject(maskGroup)
+
     if (isPointInImage(pointer)) {
       isDrawing = true
       points = []
+      currentPath = null // 重置当前路径
       const point = constrainPoint(pointer)
       points.push(point)
 
       const { strokeColor, strokeSize } = getState().optionsPanel
       const cursorColor = strokeColor.startsWith('rgba')
         ? strokeColor
-        : strokeColor.replace('rgb', 'rgba').replace(')', ', 0.7)')
-      canvas.defaultCursor = createSvgCursor(strokeSize, cursorColor)
+        : strokeColor.replace('rgb', 'rgba').replace(')', ', 0.5)')
+
+      const cursor = createSvgCursor(strokeSize, cursorColor)
+      canvas.defaultCursor = cursor
+      canvas.setCursor(cursor)
+      canvas.requestRenderAll()
     }
   }
 
   const mouseUpHandler = () => {
     if (!isDrawing) return
     isDrawing = false
+
     canvas.setActiveObject(maskGroup)
-    maskGroup.selectable = true
-    maskGroup.evented = true
-    if (points.length > 1) {
-      clearTemporaryPath()
-      const path = createPath(points)
-      maskGroup.addWithUpdate(path)
-      canvas.requestRenderAll()
-    }
+
+    currentPath = null
     points = []
-    canvas.requestRenderAll()
-    // 重置光标为默认
+
     canvas.defaultCursor = 'default'
+    canvas.setCursor('default')
+    canvas.requestRenderAll()
   }
 
   canvas.on('mouse:down', mouseDownHandler)
   canvas.on('mouse:move', mouseMoveHandler)
   canvas.on('mouse:up', mouseUpHandler)
+
+  // 添加鼠标离开画布的处理
+  canvas.on('mouse:out', () => {
+    canvas.setActiveObject(maskGroup)
+    canvas.requestRenderAll()
+  })
 
   // Cleanup function
   return () => {
@@ -185,6 +242,8 @@ export const darwinPaint: ApplyCanvasModeFunc<undefined> = (canvas, getState, di
     drawImgInLine.evented = true
     maskGroup.selectable = true
     maskGroup.evented = true
+    maskGroup.lockMovementX = false
+    maskGroup.lockMovementY = false
     canvas.off('mouse:down', mouseDownHandler)
     canvas.off('mouse:move', mouseMoveHandler)
     canvas.off('mouse:up', mouseUpHandler)

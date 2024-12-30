@@ -1,20 +1,18 @@
-import React from 'react'
-
-import { useAppSelector, useAppDispatch } from '../../app/hooks'
+import { useAppDispatch, useAppSelector } from '../../app/hooks'
 import { getShapes, shapeRemoved } from './shapesPanelSlice'
 
 import styles from './ShapesPanel.module.css'
 
-import Accordion from '@mui/material/Accordion'
-import AccordionSummary from '@mui/material/AccordionSummary'
-import AccordionDetails from '@mui/material/AccordionDetails'
-import Typography from '@mui/material/Typography'
+import DeleteIcon from '@mui/icons-material/Delete'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
+import Accordion from '@mui/material/Accordion'
+import AccordionDetails from '@mui/material/AccordionDetails'
+import AccordionSummary from '@mui/material/AccordionSummary'
+import IconButton from '@mui/material/IconButton'
 import List from '@mui/material/List'
 import ListItem from '@mui/material/ListItem'
-import IconButton from '@mui/material/IconButton'
-import DeleteIcon from '@mui/icons-material/Delete'
 import ListItemText from '@mui/material/ListItemText'
+import Typography from '@mui/material/Typography'
 import SVG from 'react-inlinesvg'
 
 export const ShapesPanel = () => {

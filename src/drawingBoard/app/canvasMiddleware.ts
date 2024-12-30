@@ -2,10 +2,8 @@ import { createListenerMiddleware } from '@reduxjs/toolkit'
 import { fabric } from 'fabric'
 
 import initControls from '../core/initControls'
-import {
-  setActiveObjectBoundingRect,
-  setMenuSidePanelVisible,
-} from '../features/menuSildeModePanel/menuSildeSlice'
+import { initMenuSlide } from '../core/initMenuSlide'
+import { setMenuSidePanelVisible } from '../features/menuSideModePanel/menuSildeSlice'
 import { strokeColorSelected, strokeSizeSelected } from '../features/optionsPanel/optionsPanelSlice'
 import { shapeRemoved, shapesUpdated } from '../features/shapesPanel/shapesPanelSlice'
 import { Tool, toolSelected } from '../features/toolsPanel/toolsPanelSlice'
@@ -32,19 +30,7 @@ export let _canvas: fabric.Canvas
 export const initializeCanvasEffect = (canvas: fabric.Canvas, dispatch: AppDispatch) => {
   _canvas = canvas
   initControls(_canvas)
-
-  canvas.on('selection:created', (options) => {
-    if (options.selected && !options.selected.length) return
-    dispatch(setMenuSidePanelVisible(true))
-    dispatch(setActiveObjectBoundingRect(options.selected![0].getBoundingRect()))
-  })
-  canvas.on('selection:updated', (options) => {
-    dispatch(setActiveObjectBoundingRect(options.selected![0].getBoundingRect()))
-  })
-
-  canvas.on('selection:cleared', (options) => {
-    dispatch(setMenuSidePanelVisible(false))
-  })
+  initMenuSlide(_canvas, dispatch)
 
   canvas.on('mouse:wheel', (opt) => {
     opt.e.preventDefault()
